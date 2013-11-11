@@ -1,0 +1,20 @@
+{
+  "name": "Daerion",
+  "version": "1.0.0",
+  "description": "Daerion's game",
+  "main": "deploy/js/Game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "http://github.com/m4uro/daerion",
+  "author": "Mauro Masserini",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "typescript": "~0.8.3",
+    "grunt-typescript": "~0.1.4",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-open": "~0.2.0"
+  }
+}
