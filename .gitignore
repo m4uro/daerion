@@ -1,1 +1,10 @@
 src*
+.DS_Store
+bin/*
+node_modules/*
+obj/*
+*.csproj
+*.csproj.user
+*.sln
+*.suo
+
