@@ -37,7 +37,7 @@ function create() {
     wolf.animations.add('move', Phaser.Animation.generateFrameNames('Wolf', 22, 37, '', 4), 30, true, false);
     wolf.animations.add('idle', Phaser.Animation.generateFrameNames('Wolf', 38, 61, '', 4), 30, true, false);
     
-    wolf.animations.play('idle', null, true);
+    wolf.animations.play('move', null, true);
    
     move = true;
     
@@ -46,8 +46,25 @@ function create() {
     wizard.input.useHandCursor = true;
     wizard.events.onInputDown.add(changeAnimation, this);
     
+    wolf.inputEnabled = true;
+    wolf.input.useHandCursor = true;
     
-    
+    wizard.offsetX = -11;
+    wizard.offsetY = 0;
+    wolf.offsetX = 3;
+    wolf.offsetY = -10;
+
+    wizard.events.onInputDown.add(getSelectionRing);
+    wolf.events.onInputDown.add(getSelectionRing);
+}
+
+function getSelectionRing(target) {
+//    sRing.x = this.x - 8;
+    sRing.scale.x = target.width/80;
+    sRing.x = target.x + (target.width - sRing.width)/2 + target.offsetX;
+//    sRing.y = this.y + 72;
+    sRing.y = target.y + target.height - sRing.height/2 + target.offsetY;
+    sRing.selected = target;
 }
 
 function update() {
@@ -56,13 +73,21 @@ function update() {
         if (wizard.x > game.width) {
             wizard.x = -20;
         }
-        sRing.x = wizard.x -8;
-        sRing.y = wizard.y+72;
+        if (sRing.selected === wizard) {
+//            sRing.x = wizard.x -8;
+            getSelectionRing(wizard);
+//            sRing.x = wizard.x + wizard.width/2 - 33;
+//            sRing.y = wizard.y + wizard.height - 12;
+//            sRing.y = wizard.y+72;
+        }
     }
-//    wolf.x += 2;
-//    if (wolf.x > game.width) {
-//        wolf.x = -20;
-//    }
+    wolf.x += 2;
+    if (wolf.x > game.width) {
+        wolf.x = -20;
+    }
+    if (sRing.selected === wolf) {
+            getSelectionRing(wolf);
+    }
 }
 
 function changeAnimation() {
@@ -79,5 +104,6 @@ function changeAnimation() {
 function render() {
 //    game.debug.renderSpriteInputInfo(wizard, 32, 32);
 //    game.debug.renderSpriteBounds(wizard);
+//    game.debug.renderSpriteBounds(wolf);
 //    game.debug.renderPoint(wizard.input._tempPoint);
 }
