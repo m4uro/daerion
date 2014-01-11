@@ -59,6 +59,8 @@ function create() {
     //anchor exacto: (regPoint.x/sourceSize.w, regPoint.y/sourceSize.h)
     wizard.anchor.setTo(0.3, 1); //so it flips around its middle
     //wizard.anchor.setTo(0.2, 1);
+    wizard.moveTo = moveTo;
+    
     wolf.inputEnabled = true;
     wolf.input.useHandCursor = true;
     wolf.anchor.setTo(0.54, 0.95);
@@ -89,6 +91,7 @@ function create() {
     puntero.destroy();
     //Interface text:
     text = game.add.bitmapText(100, bg.height - 50, 'Daerion', { font: '32px AgencyFB', align: 'center' });
+    game.input.mouse.mouseDownCallback = mouseClick;
 }
 
 function getSelectionRing(target) {
@@ -137,8 +140,20 @@ function update() {
 //    else {
 //        wizard.body.velocity.setTo(0,0);
 //    }
+    if (Phaser.Rectangle.contains(wizard.body, game.input.x, game.input.y))
+    {
+        wizard.body.velocity.setTo(0, 0);
+    }
     puntero.x = wolf.x;
     puntero.y = wolf.y;
+}
+
+function mouseClick(event)
+{
+    if ((event.which === 3) && (sRing.selected)) { //click derecho y hay un personaje seleccionado
+        console.log('yevale');
+        sRing.selected.moveTo(event.x,event.y);
+    }
 }
 
 function changeAnimation() {
@@ -152,6 +167,10 @@ function changeAnimation() {
     }
     wizard.scale.x *= -1; //flipped
     wolf.scale.x *= -1;
+}
+
+function moveTo(x, y) {
+    game.physics.moveToXY(this, x, y, 100);
 }
 
 function render() {
