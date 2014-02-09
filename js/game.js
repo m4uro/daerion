@@ -22,20 +22,43 @@ var move, bg;
 var contador = 0;
 var g;
 var text, puntero;
+var elements;
+var trees = [];
+var characters = [];
 
 function create() {
     
-    bg = game.add.sprite(0, 0, 'bg');
-    game.add.sprite(210, 4, 'tree2');
-    game.add.sprite(675, 2, 'tree3');
-    sRing = game.add.sprite(0, 0, 'sRing');
-    wizard = game.add.sprite(100, 380, 'wizard');
-    wolf = game.add.sprite(300, 400, 'wolf');
-    game.add.sprite(12, 0, 'tree1');
-    game.add.sprite(815, 0, 'tree4');
-    puntero = game.add.sprite(0,0, 'puntero');
-    puntero.anchor.setTo(0.5, 0.5);
     
+    bg = game.add.sprite(0, 0, 'bg');
+    elements = game.add.group();
+    sRing = game.add.sprite(0, 0, 'sRing');
+    
+    trees[0] = elements.create(269, 301, 'tree2');
+    trees[0].anchor.setTo(0.4, 0.98);
+    trees[0].body.setSize(40, 30, -3, 2);
+    trees[1] = elements.create(779, 360, 'tree3');
+    trees[1].anchor.setTo(0.57, 0.98);
+    trees[1].body.setSize(60, 30, 10, 0);
+    
+    wizard = game.add.sprite(100, 380, 'wizard');
+    wizard.body.setSize(50, 30, -10, 0);
+    characters[0] = wizard;
+    wolf = game.add.sprite(300, 400, 'wolf');
+    wolf.body.setSize(80, 30, 0, 0);
+    characters[1] = wolf;
+    trees[2] = elements.create(56, 488, 'tree1');
+    trees[2].anchor.setTo(0.26, 0.98);
+    trees[2].body.setSize(70, 40, -16, 0);
+    trees[3] = elements.create(899, 588, 'tree4');
+    trees[3].anchor.setTo(0.5, 0.98);
+    trees[3].body.setSize(90, 50, 10, -10);
+    puntero = game.add.sprite(0, 0, 'puntero');
+    puntero.anchor.setTo(0.5, 0.5);
+    elements.add(wizard);
+    elements.add(wolf);
+    elements.add(sRing);
+//    trees[3].inputEnabled = true;
+//    trees[3].input.enableDrag(true);
     //game.stage.backgroundColor = '#555';
     
     wizard.animations.add('attack', Phaser.Animation.generateFrameNames('Wizard', 0, 14, '', 4), 40, true, false);
@@ -106,6 +129,13 @@ function getSelectionRing(target) {
 }
 
 function update() {
+//    game.physics.collide(characters, trees);
+    var i, j;
+    for (i = 0; i < trees.length; i += 1) {
+        for (j = 0; j < characters.length; j += 1) {
+            game.physics.collide(trees[i], characters[j]);
+        }
+    }
     getSelectionRing();
     /*if (move === true) {
         wizard.x += 1 * wizard.scale.x;
@@ -158,11 +188,13 @@ function update() {
             wolf.body.velocity.setTo(0, 0);
         }
     }
-    if (Phaser.Rectangle.contains(wizard.body, game.input.x, game.input.y)) {
-        wizard.body.velocity.setTo(0, 0);
-    }
+//    if (Phaser.Rectangle.contains(wizard.body, game.input.x, game.input.y)) {
+//        wizard.body.velocity.setTo(0, 0);
+//    }
     puntero.x = wolf.x;
     puntero.y = wolf.y;
+    
+    elements.sort();
 }
 
 function mouseClick(event) {
@@ -195,8 +227,17 @@ function moveTo(x, y, target) {
 }
 
 function render() {
-//    game.debug.renderSpriteInputInfo(boton, 32, 32);
+    game.debug.renderSpriteInfo(trees[3], 32, 32);
 //    game.debug.renderSpriteBounds(wizard);
 //    game.debug.renderSpriteBounds(wolf);
 //    game.debug.renderPoint(wizard.input._tempPoint);
+//    game.debug.renderSpriteBody(wizard);
+//    game.debug.renderSpriteBody(wolf);
+    game.debug.renderPoint(new Phaser.Point(trees[3].x, trees[3].y));
+    var i;
+    for (i = 0; i < trees.length; i += 1) {
+        trees[i].body.immovable = true;
+//        game.debug.renderSpriteBody(trees[i]);
+//        game.debug.renderSpriteBounds(trees[i]);
+    }
 }
