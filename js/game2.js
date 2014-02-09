@@ -13,7 +13,6 @@ function preload() {
     game.load.image('buttonL', 'assets/button_lightning.png');
     game.load.image('buttonP', 'assets/button_pause.png');
     game.load.image('iconWizard', 'assets/icon_wizard.png');
-    game.load.image('puntero', 'assets/pointer.png');
     game.load.bitmapFont('agency', 'assets/agency.png', 'assets/agency.xml');
 }
 
@@ -21,34 +20,51 @@ var wizard, sRing;
 var move, bg;
 var contador = 0;
 var g;
-var text, puntero;
-var characters, trees;
+var text;
+var elements;
+var trees = [];
+var characters = [];
 
 function create() {
-    
+    var i;
     
     bg = game.add.sprite(0, 0, 'bg');
-    characters = game.add.group();
-    trees = game.add.group();
     elements = game.add.group();
-    
-    elements.add(characters._container);
-    elements.add(trees._container);
-    
-    trees.create(210, 4, 'tree2').body.setSize(40,30,40,270);
-    trees.create(675, 2, 'tree3').body.setSize(60,30,80,330);
     sRing = game.add.sprite(0, 0, 'sRing');
-    wizard = game.add.sprite(100, 380, 'wizard');
-    wizard.body.setSize(50, 30, -10, 0);
-    wolf = game.add.sprite(300, 400, 'wolf');
-    wolf.body.setSize(80, 30, 0, 0);
-    trees.create(12, 0, 'tree1').body.setSize(70,40,10,450);;
-    trees.create(815, 0, 'tree4').body.setSize(90,50,50,530);;
-    puntero = game.add.sprite(0,0, 'puntero');
-    puntero.anchor.setTo(0.5, 0.5);
-    characters.add(wizard);
-    characters.add(wolf);
     
+    trees[0] = elements.create(269, 301, 'tree2');
+    trees[0].anchor.setTo(0.4, 0.98);
+    trees[0].body.setSize(40, 30, -3, 2);
+    trees[1] = elements.create(779, 360, 'tree3');
+    trees[1].anchor.setTo(0.57, 0.98);
+    trees[1].body.setSize(60, 30, 10, 0);
+    
+    wizard = game.add.sprite(100, 380, 'wizard');
+    wizard.body.setSize(40, 30, -10, 0);
+    characters[0] = wizard;
+    wolf = game.add.sprite(300, 400, 'wolf');
+    wolf.body.setSize(50, 30, 0, 0);
+    characters[1] = wolf;
+    trees[2] = elements.create(56, 488, 'tree1');
+    trees[2].anchor.setTo(0.26, 0.98);
+    trees[2].body.setSize(70, 40, -16, 0);
+    trees[3] = elements.create(899, 588, 'tree4');
+    trees[3].anchor.setTo(0.5, 0.98);
+    trees[3].body.setSize(90, 50, 10, -10);
+    
+    for (i = 0; i < trees.length; i += 1) {
+        trees[i].body.immovable = true;
+        trees[i].radius = trees[i].body.width * Math.SQRT1_2;
+    }
+    for (i = 0; i < characters.length; i += 1) {
+        characters[i].radius = characters[i].body.width * Math.SQRT1_2;
+    }
+    
+    elements.add(wizard);
+    elements.add(wolf);
+    elements.add(sRing);
+//    trees[3].inputEnabled = true;
+//    trees[3].input.enableDrag(true);
     //game.stage.backgroundColor = '#555';
     
     wizard.animations.add('attack', Phaser.Animation.generateFrameNames('Wizard', 0, 14, '', 4), 40, true, false);
@@ -103,7 +119,6 @@ function create() {
     boton = game.add.sprite(bg.width - 96, 16, 'iconWizard');
     boton.inputEnabled = true;
     boton.input.enableDrag();
-    puntero.destroy();
     //Interface text:
     text = game.add.bitmapText(100, bg.height - 50, 'Daerion', { font: '32px AgencyFB', align: 'center' });
     game.input.mouse.mouseDownCallback = mouseClick;
@@ -119,108 +134,154 @@ function getSelectionRing(target) {
 }
 
 function update() {
-    game.physics.collide(characters, trees);
+    var i, j, item;
+    var offset = 4;
+    
+    for (i = 0; i < trees.length; i += 1) {
+        for (j = 0; j < characters.length; j += 1) {
+            game.physics.collide(trees[i], characters[j]);
+        }
+    }
+    
     getSelectionRing();
-    /*if (move === true) {
-        wizard.x += 1 * wizard.scale.x;
-        if (wizard.x > game.width) {
-            wizard.x = -20;
-        }
-        if (wizard.x < -20) {
-            wizard.x = bg.width;
-        }
-        if (sRing.selected === wizard) {
-            getSelectionRing(wizard);
+
+    for (i = 0; i < characters.length; i += 1) {
+        item = characters[i];
+        if (item.isMoving) {
+            if ((item.x > item.newDest.x - offset) && (item.x < item.newDest.x + offset) && (item.y > item.newDest.y - offset) && (item.y < item.newDest.y + offset)) {
+                if (item.trueDest) {
+                    item.isMoving = false;
+                    item.animations.play('idle', null, true);
+                    item.body.velocity.setTo(0, 0);
+                }
+                else {
+                    item.trueDest = calcDest(item, item.dest);
+                    game.physics.moveToXY(item, item.newDest.x, item.newDest.y, item.speed);
+                }
+            }
         }
     }
-    wolf.x += 2 * wizard.scale.x;
-    if (wolf.x > game.width) {
-        wolf.x = -20;
-    }
-    if (wolf.x < -20) {
-        wolf.x = bg.width;
-    }
-    if (sRing.selected === wolf) {
-            getSelectionRing(wolf);
-    }*/
-//    if (game.input.mousePointer.isDown)
-//    {
-//        //  400 is the speed it will move towards the mouse
-//        game.physics.moveToPointer(wizard, 100);
-//
-//        //  if it's overlapping the mouse, don't move any more
-//        if (Phaser.Rectangle.contains(wizard.body, game.input.x, game.input.y))
-//        {
-//            wizard.body.velocity.setTo(0, 0);
+    
+//    if (wolf.isMoving) {
+//        if ((wolf.x > wolf.dest.x - offset) && (wolf.x < wolf.dest.x + offset) && (wolf.y > wolf.dest.y - offset) && (wolf.y < wolf.dest.y + offset)) {
+//            wolf.isMoving = false;
+//            wolf.animations.play('idle', null, true);
+//            wolf.body.velocity.setTo(0, 0);
 //        }
 //    }
-//    else {
-//        wizard.body.velocity.setTo(0,0);
-//    }
-    var offset = 2;
-    if (wizard.isMoving) {
-        if ((wizard.x > wizard.dest.x - offset) && (wizard.x < wizard.dest.x + offset) && (wizard.y > wizard.dest.y - offset) && (wizard.y < wizard.dest.y + offset)) {
-            wizard.isMoving = false;
-            wizard.animations.play('idle', null, true);
-            wizard.body.velocity.setTo(0, 0);
-        }
-    }
-    if (wolf.isMoving) {
-        if ((wolf.x > wolf.dest.x - offset) && (wolf.x < wolf.dest.x + offset) && (wolf.y > wolf.dest.y - offset) && (wolf.y < wolf.dest.y + offset)) {
-            wolf.isMoving = false;
-            wolf.animations.play('idle', null, true);
-            wolf.body.velocity.setTo(0, 0);
-        }
-    }
-//    if (Phaser.Rectangle.contains(wizard.body, game.input.x, game.input.y)) {
-//        wizard.body.velocity.setTo(0, 0);
-//    }
-    puntero.x = wolf.x;
-    puntero.y = wolf.y;
-    
+
     elements.sort();
 }
 
 function mouseClick(event) {
+    var p;
     var selected = sRing.selected;
     if (selected && (event.which === 3)) { //character is selected and right click TODO: replace with sRing.selected.isPC
-        //TODO checkValidDest
-        (event.x > selected.x) ? selected.scale.x = 1 : selected.scale.x = -1;
-        selected.animations.play('move', null, true);
-        selected.dest = new Phaser.Point(event.x, event.y);
-        moveTo(event.x, event.y, selected);
-        selected.isMoving = true;
+        p = new Phaser.Point(event.x, event.y);
+        if (checkValidDest(selected, p)) {
+            (event.x > selected.x) ? selected.scale.x = 1 : selected.scale.x = -1;
+            selected.dest = p;
+            selected.isMoving = true;
+            selected.animations.play('move', null, true);
+            selected.trueDest = calcDest(selected, selected.dest);
+            calcDest(selected, selected.newDest); //added second calculation to avoid collision when the player is very close to the obstacle. Significant overhead
+            game.physics.moveToXY(selected, selected.newDest.x, selected.newDest.y, selected.speed);
+        }
     }
 }
 
-function changeAnimation() {
-    var animations = ['attack', 'idle', 'move'];
-    contador = (contador + 1) % 3;
-    wizard.animations.play(animations[contador], null, true);
-    if (contador === 2) {
-        move = true;
-    } else {
-        move = false;
-    }
-    wizard.scale.x *= -1; //flipped
-    wolf.scale.x *= -1;
-}
+//function changeAnimation() {
+//    var animations = ['attack', 'idle', 'move'];
+//    contador = (contador + 1) % 3;
+//    wizard.animations.play(animations[contador], null, true);
+//    if (contador === 2) {
+//        move = true;
+//    } else {
+//        move = false;
+//    }
+//    wizard.scale.x *= -1; //flipped
+//    wolf.scale.x *= -1;
+//}
 
 function moveTo(x, y, target) {
     game.physics.moveToXY(target, x, y, target.speed);
 }
 
+function calcDest(player, target) {
+    var i, item, d, alpha, gamma, dpt, dpi, shorterDistance, beta, closest, u, u1, u2, omega, theta;
+    var threats = [];
+    gamma = game.physics.angleBetween(player, target);
+    dpt = game.physics.distanceBetween(player, target);
+    shorterDistance = Infinity;
+    for (i = 0; i < trees.length; i++) {
+        item = trees[i];
+        alpha = Math.abs(gamma - game.physics.angleBetween(player, item));
+        console.log("a: " + (alpha * 180 / Math.PI) + "  g: " + (gamma *180/Math.PI) + "  b: " + (game.physics.angleBetween(player, item)*180/Math.PI));
+        if ((alpha < Math.PI / 2)||(alpha > 3* Math.PI/2)) {
+            dpi = game.physics.distanceBetween(player, item);
+            if (dpi <= dpt) { //if the obstacle is closer than the target
+                if (alpha > 3* Math.PI/2) alpha = Math.PI * 2 - alpha;
+                d = dpi * Math.sin(alpha);
+                if (d <= player.radius + item.radius) {
+                    if (dpi < shorterDistance) {
+                        shorterDistance = dpi;
+                        closest = item;
+                    }
+                    console.log("threat: " + i);
+                    threats.push(item);
+                }
+            }
+        }
+    }
+    if (threats.length > 0) {
+        dpi = game.physics.distanceBetween(player, closest);
+        beta = game.physics.angleBetween(player, closest);
+        alpha = Math.abs(gamma - beta);
+        var signo = 1;
+        if (alpha > 3* Math.PI/2) {
+            alpha = Math.PI * 2 - alpha;
+            signo = -1;
+        }
+        d = dpi * Math.sin(alpha);
+        u1 = dpi * Math.cos(alpha);
+        u2 = player.radius + closest.radius - d + 3; //added a little offset
+        u = Math.sqrt(u1 * u1 + u2 * u2);
+        theta = Math.asin(u2 / u);
+        if (gamma < beta) {
+            theta *= -1;
+        }
+        omega = gamma + theta * signo;
+        player.newDest = new Phaser.Point(u * Math.cos(omega) + player.x, u * Math.sin(omega) + player.y);
+        return false;
+    }
+    else {
+        player.newDest = target;
+        return true;
+    }
+}
+
+function checkValidDest(player, target) {
+    var i, item;
+    for (i = 0; i < trees.length; i++) {
+        item = trees[i];
+        if ((game.physics.distanceBetween(target, item)) <= (player.radius + item.radius)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function render() {
-//    game.debug.renderSpriteInputInfo(boton, 32, 32);
+//    game.debug.renderSpriteInfo(trees[3], 32, 32);
 //    game.debug.renderSpriteBounds(wizard);
 //    game.debug.renderSpriteBounds(wolf);
 //    game.debug.renderPoint(wizard.input._tempPoint);
 //    game.debug.renderSpriteBody(wizard);
 //    game.debug.renderSpriteBody(wolf);
-    trees.forEach(function(item) {
-        //item.body.setSize(100,100,0,0);
-        item.body.immovable = true;
-//        game.debug.renderSpriteBody(item);
-//        game.debug.renderSpriteBounds(item);
-    });
+//    game.debug.renderPoint(new Phaser.Point(trees[3].x, trees[3].y));
+    var i;
+//    for (i = 0; i < trees.length; i += 1) {
+//        game.debug.renderSpriteBody(trees[i]);
+//        game.debug.renderSpriteBounds(trees[i]);
+//    }
 }
