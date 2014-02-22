@@ -13,6 +13,7 @@ function preload() {
     game.load.image('buttonL', 'assets/button_lightning.png');
     game.load.image('buttonP', 'assets/button_pause.png');
     game.load.image('iconWizard', 'assets/icon_wizard.png');
+    game.load.image('red','assets/red.png');
     game.load.bitmapFont('agency', 'assets/agency.png', 'assets/agency.xml');
 }
 
@@ -67,15 +68,17 @@ function create() {
 //    trees[3].input.enableDrag(true);
     //game.stage.backgroundColor = '#555';
     
-    wizard.animations.add('attack', Phaser.Animation.generateFrameNames('Wizard', 0, 14, '', 4), 40, true, false);
-    wizard.animations.add('idle', Phaser.Animation.generateFrameNames('Wizard', 15, 44, '', 4), 30, true, false);
-    wizard.animations.add('move', Phaser.Animation.generateFrameNames('Wizard', 45, 71, '', 4), 30, true, false);
+    wizard.animations.add('attack', Phaser.Animation.generateFrameNames('Wizard', 0, 19, '', 4), 40, true, false);
+    wizard.animations.add('idle', Phaser.Animation.generateFrameNames('Wizard', 20, 49, '', 4), 30, true, false);
+    wizard.animations.add('move', Phaser.Animation.generateFrameNames('Wizard', 50, 76, '', 4), 30, true, false);
 
     wizard.animations.play('idle', null, true);
     
     wolf.animations.add('attack', Phaser.Animation.generateFrameNames('Wolf', 0, 21, '', 4), 30, true, false);
     wolf.animations.add('move', Phaser.Animation.generateFrameNames('Wolf', 22, 37, '', 4), 30, true, false);
     wolf.animations.add('idle', Phaser.Animation.generateFrameNames('Wolf', 38, 61, '', 4), 30, true, false);
+    wolf.animations.add('death', Phaser.Animation.generateFrameNames('Wolf', 62, 89, '', 4), 24, true, false);
+    wolf.animations.add('hit', Phaser.Animation.generateFrameNames('Wolf', 90, 100, '', 4), 24, true, false);
     
     wolf.animations.play('idle', null, true);
    
@@ -88,10 +91,14 @@ function create() {
     //anchor exacto: (regPoint.x/sourceSize.w, regPoint.y/sourceSize.h)
     wizard.anchor.setTo(0.3, 1); //so it flips around its middle
     //wizard.anchor.setTo(0.2, 1);
+    wizard.isPC = true;
     
     wolf.inputEnabled = true;
     wolf.input.useHandCursor = true;
+
     wolf.anchor.setTo(0.54, 0.95);
+    
+    wolf.isPC = false;
     
 //    wizard.offsetX = 0;
 //    wizard.offsetY = 0;
@@ -116,7 +123,12 @@ function create() {
     game.add.sprite(400, bg.height - 56, 'buttonF');
     game.add.sprite(450, bg.height - 56, 'buttonL');
     game.add.sprite(bg.width - 65, bg.height - 56, 'buttonP');
-    boton = game.add.sprite(bg.width - 96, 16, 'iconWizard');
+    game.add.sprite(bg.width - 96, 16, 'iconWizard');
+    boton = game.add.sprite(bg.width - 90, 93, 'red');
+    boton.width = 71;
+    boton.height = 40;
+    boton.alpha = 0.5;
+    boton.anchor.setTo(0, 1);
     boton.inputEnabled = true;
     boton.input.enableDrag();
     //Interface text:
@@ -124,8 +136,13 @@ function create() {
     game.input.mouse.mouseDownCallback = mouseClick;
 }
 
-function getSelectionRing(target) {
-    if (target || (target = sRing.selected)) {
+function getSelectionRing(target, pointer) {
+    if (pointer && (pointer.button === 2)) {
+        if (sRing.selected && sRing.selected.isPC && target && (!target.isPC)) { //player wants to attack
+            sRing.selected.chasing = target;
+        }
+    }
+    else if (target || (target = sRing.selected)) {
         sRing.scale.x = target.width / 80;
         sRing.x = target.x - sRing.width / 2 + (target.offsetX || 0);
         sRing.y = target.y - sRing.height / 2 + (target.offsetY || 0);
@@ -134,7 +151,7 @@ function getSelectionRing(target) {
 }
 
 function update() {
-    var i, j, item;
+    var i, j, item, p;
     var offset = 4;
     
     for (i = 0; i < trees.length; i += 1) {
@@ -147,7 +164,29 @@ function update() {
 
     for (i = 0; i < characters.length; i += 1) {
         item = characters[i];
-        if (item.isMoving) {
+        if (item.chasing) {
+            offset = 40; //TODO set offset to a meaningful value according to the characters width
+            if ((item.x > item.chasing.x - offset) && (item.x < item.chasing.x + offset) && (item.y > item.chasing.y - offset/2) && (item.y < item.chasing.y + offset/2)) {
+                item.isMoving = false;
+                item.animations.play('attack', null, false);
+                if (item.chasing.animations.currentAnim.name === 'idle') {
+                    item.chasing.animations.play('hit', null, false);
+                }
+                item.body.velocity.setTo(0, 0);
+                item.chasing = null;
+            }
+            else {
+                p = new Phaser.Point(item.chasing.x, item.chasing.y);
+                (p.x > item.x) ? item.scale.x = 1 : item.scale.x = -1;
+                item.dest = p;
+                item.isMoving = true;
+                item.animations.play('move', null, true);
+                item.trueDest = calcDest(item, item.dest);
+                calcDest(item, item.newDest);
+                game.physics.moveToXY(item, item.newDest.x, item.newDest.y, item.speed);
+            }
+        }
+        else if (item.isMoving) {
             if ((item.x > item.newDest.x - offset) && (item.x < item.newDest.x + offset) && (item.y > item.newDest.y - offset) && (item.y < item.newDest.y + offset)) {
                 if (item.trueDest) {
                     item.isMoving = false;
@@ -159,6 +198,9 @@ function update() {
                     game.physics.moveToXY(item, item.newDest.x, item.newDest.y, item.speed);
                 }
             }
+        }
+        if (item.animations.currentAnim.isFinished) {
+            item.animations.play('idle', null, true);
         }
     }
     
@@ -177,6 +219,7 @@ function mouseClick(event) {
     var p;
     var selected = sRing.selected;
     if (selected && (event.which === 3)) { //character is selected and right click TODO: replace with sRing.selected.isPC
+        selected.chasing = null;
         p = new Phaser.Point(event.x, event.y);
         if (checkValidDest(selected, p)) {
             (event.x > selected.x) ? selected.scale.x = 1 : selected.scale.x = -1;
@@ -207,6 +250,10 @@ function moveTo(x, y, target) {
     game.physics.moveToXY(target, x, y, target.speed);
 }
 
+
+/*
+    Returns true when there are no obstacles, false otherwise
+*/
 function calcDest(player, target) {
     var i, item, d, alpha, gamma, dpt, dpi, shorterDistance, beta, closest, u, u1, u2, omega, theta;
     var threats = [];
@@ -216,7 +263,7 @@ function calcDest(player, target) {
     for (i = 0; i < trees.length; i++) {
         item = trees[i];
         alpha = Math.abs(gamma - game.physics.angleBetween(player, item));
-        console.log("a: " + (alpha * 180 / Math.PI) + "  g: " + (gamma *180/Math.PI) + "  b: " + (game.physics.angleBetween(player, item)*180/Math.PI));
+//        console.log("a: " + (alpha * 180 / Math.PI) + "  g: " + (gamma *180/Math.PI) + "  b: " + (game.physics.angleBetween(player, item)*180/Math.PI));
         if ((alpha < Math.PI / 2)||(alpha > 3* Math.PI/2)) {
             dpi = game.physics.distanceBetween(player, item);
             if (dpi <= dpt) { //if the obstacle is closer than the target
@@ -227,7 +274,7 @@ function calcDest(player, target) {
                         shorterDistance = dpi;
                         closest = item;
                     }
-                    console.log("threat: " + i);
+//                    console.log("threat: " + i);
                     threats.push(item);
                 }
             }
