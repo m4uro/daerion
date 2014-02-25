@@ -2,26 +2,25 @@ var game = new Phaser.Game(1024, 656, Phaser.CANVAS, 'game', { preload: preload,
 
 function preload() {
     game.load.atlas('wizard', 'assets/wizard.png', 'assets/wizard.json');
+    game.load.atlas('fighter', 'assets/fighter.png', 'assets/fighter.json');
     game.load.atlas('wolf', 'assets/wolf.png', 'assets/wolf.json');
+    game.load.atlas('necromancer', 'assets/necromancer.png', 'assets/necromancer.json');
     game.load.image('bg', 'assets/woods_bg.png');
     game.load.image('tree1', 'assets/woods_tree1.png');
     game.load.image('tree2', 'assets/woods_tree2.png');
     game.load.image('tree3', 'assets/woods_tree3.png');
     game.load.image('tree4', 'assets/woods_tree4.png');
     game.load.image('sRing', 'assets/selection_ring.png');
-//    game.load.image('buttonF', 'assets/button_fire.png');
-//    game.load.image('buttonL', 'assets/button_lightning.png');
-//    game.load.image('buttonP', 'assets/button_pause.png');
     game.load.image('iconWizard', 'assets/icon_wizard.png');
+    game.load.image('iconFighter', 'assets/icon_fighter.png');
     game.load.image('red','assets/red.png');
     game.load.bitmapFont('agency', 'assets/agency.png', 'assets/agency.xml');
-    
     game.load.spritesheet('buttonF', 'assets/button_fire.png', 42, 42);
     game.load.spritesheet('buttonL', 'assets/button_lightning.png', 42, 42);
     game.load.spritesheet('buttonP', 'assets/button_pause.png', 42, 42);
 }
 
-var wizard, sRing, mode, doNotProcess;
+var wizard, wolf, fighter, necromancer, sRing, mode, doNotProcess;
 var move, bg;
 var contador = 0;
 var g;
@@ -47,11 +46,10 @@ function create() {
     trees[1].body.setRectangle(60, 30, 80, 330);
     
     wizard = game.add.sprite(100, 380, 'wizard');
-    wizard.body.setRectangle(40, 30, 6, 53);
-    characters[0] = wizard;
+    fighter = game.add.sprite(200, 420, 'fighter');
     wolf = game.add.sprite(300, 400, 'wolf');
-    wolf.body.setRectangle(50, 30, 40, 65);
-    characters[1] = wolf;
+    necromancer = game.add.sprite(600, 400, 'necromancer');
+    
     trees[2] = elements.create(56, 488, 'tree1');
     trees[2].anchor.setTo(0.26, 0.98);
     trees[2].body.setRectangle(70, 40, 9, 445);
@@ -59,16 +57,15 @@ function create() {
     trees[3].anchor.setTo(0.5, 0.98);
     trees[3].body.setRectangle(90, 50, 50, 530);
     
-    for (i = 0; i < trees.length; i += 1) {
-        trees[i].body.immovable = true;
-        trees[i].radius = trees[i].body.shape.w * Math.SQRT1_2;
-    }
-    for (i = 0; i < characters.length; i += 1) {
-        characters[i].radius = characters[i].body.shape.w * Math.SQRT1_2;
-    }
+    characters[0] = wizard;
+    characters[1] = fighter;
+    characters[2] = wolf;
+    characters[3] = necromancer;
     
     elements.add(wizard);
+    elements.add(fighter);
     elements.add(wolf);
+    elements.add(necromancer);
     elements.add(sRing);
 //    trees[3].inputEnabled = true;
 //    trees[3].input.enableDrag(true);
@@ -82,6 +79,62 @@ function create() {
     wizard.animations.add('fireball', Phaser.Animation.generateFrameNames('Wizard', 104, 132, '', 4), 24, true, false);
 
     wizard.animations.play('idle', null, true);
+
+    wizard.body.setRectangle(40, 30, 15, 60);
+    wizard.inputEnabled = true;
+    wizard.input.useHandCursor = true;
+    wizard.anchor.setTo(0.35, 0.8); //anchor exacto: (regPoint.x/sourceSize.w, regPoint.y/sourceSize.h)
+    wizard.isPC = true;
+    wizard.timer = game.time.create(false);
+    wizard.attackInterval = 1000; //milliseconds
+    wizard.range = 40;
+    wizard.health = 200;
+    wizard.maxHealth = 200;
+    wizard.attackDamage = 20;
+    wizard.offsetX = 0;
+    wizard.offsetY = 0;
+    wizard.speed = 100;
+    wizard.events.onInputDown.add(getSelectionRing);
+    
+    game.add.sprite(bg.width - 96, 16, 'iconWizard');
+    wizard.healthBar = game.add.sprite(bg.width - 90, 93, 'red');
+    wizard.healthBar.width = 71;
+    wizard.healthBar.height = 0;
+    wizard.healthBar.alpha = 0.5;
+    wizard.healthBar.anchor.setTo(0, 1);
+    
+    
+    fighter.animations.add('attack', Phaser.Animation.generateFrameNames('Fighter', 0, 17, '', 4), 40, true, false);
+    fighter.animations.add('move', Phaser.Animation.generateFrameNames('Fighter', 18, 45, '', 4), 30, true, false);
+    fighter.animations.add('idle', Phaser.Animation.generateFrameNames('Fighter', 46, 66, '', 4), 24, true, false);
+    fighter.animations.add('death', Phaser.Animation.generateFrameNames('Fighter', 67, 86, '', 4), 24, true, false);
+    fighter.animations.add('hit', Phaser.Animation.generateFrameNames('Fighter', 87, 96, '', 4), 24, true, false);
+
+    fighter.animations.play('idle', null, true);
+
+    fighter.body.setRectangle(40, 30, 20, 68);
+    fighter.inputEnabled = true;
+    fighter.input.useHandCursor = true;
+    fighter.anchor.setTo(0.37, 0.88); //anchor exacto: (regPoint.x/sourceSize.w, regPoint.y/sourceSize.h)
+    fighter.isPC = true;
+    fighter.timer = game.time.create(false);
+    fighter.attackInterval = 1000; //milliseconds
+    fighter.range = 40;
+    fighter.health = 200;
+    fighter.maxHealth = 200;
+    fighter.attackDamage = 30;
+    fighter.offsetX = 0;
+    fighter.offsetY = 0;
+    fighter.speed = 120;
+    fighter.events.onInputDown.add(getSelectionRing);
+    
+    game.add.sprite(bg.width - 96, 109, 'iconFighter');
+    fighter.healthBar = game.add.sprite(bg.width - 90, 186, 'red');
+    fighter.healthBar.width = 71;
+    fighter.healthBar.height = 0;
+    fighter.healthBar.alpha = 0.5;
+    fighter.healthBar.anchor.setTo(0, 1);
+    
     
     wolf.animations.add('attack', Phaser.Animation.generateFrameNames('Wolf', 0, 21, '', 4), 30, true, false);
     wolf.animations.add('move', Phaser.Animation.generateFrameNames('Wolf', 22, 37, '', 4), 30, true, false);
@@ -90,48 +143,47 @@ function create() {
     wolf.animations.add('hit', Phaser.Animation.generateFrameNames('Wolf', 90, 100, '', 4), 24, true, false);
     
     wolf.animations.play('idle', null, true);
-   
-//    move = true;
     
-    wizard.inputEnabled = true;
-//    wizard.input.pixelPerfect = true;
-    wizard.input.useHandCursor = true;
-//    wizard.events.onInputDown.add(changeAnimation, this);
-    //anchor exacto: (regPoint.x/sourceSize.w, regPoint.y/sourceSize.h)
-    wizard.anchor.setTo(0.35, 0.8); //so it flips around its middle
-    //wizard.anchor.setTo(0.2, 1);
-    wizard.isPC = true;
-    
-    wizard.timer = game.time.create(false);
-    wizard.attackInterval = 1000; //milliseconds
-    wizard.range = 40;
-    wizard.health = 200;
-    wizard.maxHealth = 200;
-    wizard.attackDamage = 20;
-    
+    wolf.body.setRectangle(50, 30, 40, 65);
+    wolf.inputEnabled = true;
+    wolf.input.useHandCursor = true;
+    wolf.anchor.setTo(0.5, 0.88);
+    wolf.isPC = false;
     wolf.timer = game.time.create(false);
     wolf.attackInterval = 1000; //milliseconds
     wolf.range = 60;
     wolf.health = 200;
+    wolf.maxHealth = 200;
     wolf.attackDamage = 30;
-    
-    wolf.inputEnabled = true;
-    wolf.input.useHandCursor = true;
-
-    wolf.anchor.setTo(0.5, 0.88);
-    
-    wolf.isPC = false;
-    
-    wizard.offsetX = 0;
-    wizard.offsetY = 0;
     wolf.offsetX = -3;
     wolf.offsetY = -5;
-    wizard.speed = 100;
     wolf.speed = 200;
-    
-
-    wizard.events.onInputDown.add(getSelectionRing);
     wolf.events.onInputDown.add(getSelectionRing);
+    
+    
+    necromancer.animations.add('attack', Phaser.Animation.generateFrameNames('Necromancer', 0, 15, '', 4), 30, true, false);
+    necromancer.animations.add('move', Phaser.Animation.generateFrameNames('Necromancer', 16, 41, '', 4), 30, true, false);
+    necromancer.animations.add('idle', Phaser.Animation.generateFrameNames('Necromancer', 42, 62, '', 4), 30, true, false);
+    necromancer.animations.add('death', Phaser.Animation.generateFrameNames('Necromancer', 63, 87, '', 4), 24, true, false);
+    necromancer.animations.add('hit', Phaser.Animation.generateFrameNames('Necromancer', 88, 97, '', 4), 24, true, false);
+    
+    necromancer.animations.play('idle', null, true);
+    
+    necromancer.body.setRectangle(40, 30, 20, 53);
+    necromancer.inputEnabled = true;
+    necromancer.input.useHandCursor = true;
+    necromancer.anchor.setTo(0.33, 0.97);
+    necromancer.isPC = false;
+    necromancer.timer = game.time.create(false);
+    necromancer.attackInterval = 1000; //milliseconds
+    necromancer.range = 40;
+    necromancer.health = 200;
+    necromancer.maxHealth = 200;
+    necromancer.attackDamage = 20;
+    necromancer.offsetX = 0;
+    necromancer.offsetY = 0;
+    necromancer.speed = 100;
+    necromancer.events.onInputDown.add(getSelectionRing);
     
     //Drawing transparent rectangles for bottom interface:
     g = game.add.graphics(0, 0);
@@ -141,20 +193,10 @@ function create() {
     g.fillColor = 0xffffff;
     g.fillAlpha = 0.72;
     g.drawRect(25, bg.height - 48, bg.width - 50, 28);
-    game.add.sprite(20, bg.height - 56, 'buttonP');
-    game.add.sprite(400, bg.height - 56, 'buttonF');
-    game.add.sprite(450, bg.height - 56, 'buttonL');
-    game.add.sprite(bg.width - 65, bg.height - 56, 'buttonP');
-    button = game.add.sprite(bg.width - 96, 16, 'iconWizard');
-//    button.inputEnabled = true;
-//    button.input.useHandCursor = true;
-//    button.events.onInputDown.add(getSelectionRing, wizard);
-    
-    wizard.healthBar = game.add.sprite(bg.width - 90, 93, 'red');
-    wizard.healthBar.width = 71;
-    wizard.healthBar.height = 0;
-    wizard.healthBar.alpha = 0.5;
-    wizard.healthBar.anchor.setTo(0, 1);
+//    game.add.sprite(20, bg.height - 56, 'buttonP');
+//    game.add.sprite(400, bg.height - 56, 'buttonF');
+//    game.add.sprite(450, bg.height - 56, 'buttonL');
+//    game.add.sprite(bg.width - 65, bg.height - 56, 'buttonP');
     
     game.add.button(400, bg.height - 56, 'buttonF', fireball, this, 0, 0, 1);//over, normal, press
     game.add.button(20, bg.height - 56, 'buttonP', fireball, this, 0, 0, 1);
@@ -164,6 +206,15 @@ function create() {
     //Interface text:
     text = game.add.bitmapText(100, bg.height - 50, 'Daerion', { font: '32px AgencyFB', align: 'center' });
     game.input.mouse.mouseDownCallback = mouseClick;
+    
+    for (i = 0; i < trees.length; i += 1) {
+        trees[i].body.immovable = true;
+        trees[i].radius = trees[i].body.shape.w * Math.SQRT1_2;
+    }
+    for (i = 0; i < characters.length; i += 1) {
+        characters[i].radius = characters[i].body.shape.w * Math.SQRT1_2;
+    }
+    necromancer.chasing = fighter;  //just for testing
 }
 
 //function getSelectionRing(target, pointer) {
@@ -202,8 +253,15 @@ function getSelectionRing(target, pointer) {
                     sRing.selected = target;
                 }
                 else if (mode === "select") {
-                    alert("effect");
-                    mode = "normal";
+                    if (!target.isPC) {//TODO this should depend on the type of spell - affecting enemy/ally
+                        sRing.selected.animations.play('fireball', null, false);
+                        sRing.selected.body.velocity.setTo(0, 0);
+                        sRing.selected.isMoving = false;
+                        mode = "normal";
+                    }
+                    else {
+                        alert("not a valid target");
+                    }
                 }
             }
         }
@@ -416,7 +474,7 @@ function checkValidDest(player, target) {
 }
 
 function fireball () {
-    mode = "select";
+    mode = "select"; //TODO this should depend on the type of spell/power -> affecting self/target
 }
 
 function render() {
@@ -426,8 +484,11 @@ function render() {
 //    game.debug.renderPoint(wizard.input._tempPoint);
 //    game.debug.renderSpriteBody(wizard);
 //    game.debug.renderSpriteBody(wolf);
+//    game.debug.renderSpriteBody(fighter);
+//    game.debug.renderSpriteBody(necromancer);
 //    game.debug.renderPoint(new Phaser.Point(wizard.x, wizard.y));
 //    game.debug.renderPoint(new Phaser.Point(wolf.x, wolf.y));
+//    game.debug.renderPoint(new Phaser.Point(necromancer.x, necromancer.y));
 //    game.debug.renderPhysicsBody(wizard.body);
 //    game.debug.renderPhysicsBody(wolf.body);
 //    game.debug.renderSpriteBody(wizard);

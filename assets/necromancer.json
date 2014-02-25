@@ -1,0 +1,893 @@
+﻿{"frames": [
+
+{
+	"filename": "Necromancer0000",
+	"frame": {"x":0,"y":0,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0001",
+	"frame": {"x":125,"y":0,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0002",
+	"frame": {"x":250,"y":0,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0003",
+	"frame": {"x":375,"y":0,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0004",
+	"frame": {"x":500,"y":0,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0005",
+	"frame": {"x":625,"y":0,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0006",
+	"frame": {"x":750,"y":0,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0007",
+	"frame": {"x":875,"y":0,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0008",
+	"frame": {"x":1000,"y":0,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0009",
+	"frame": {"x":0,"y":87,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0010",
+	"frame": {"x":125,"y":87,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0011",
+	"frame": {"x":250,"y":87,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0012",
+	"frame": {"x":375,"y":87,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0013",
+	"frame": {"x":500,"y":87,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0014",
+	"frame": {"x":625,"y":87,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0015",
+	"frame": {"x":750,"y":87,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0016",
+	"frame": {"x":875,"y":87,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0017",
+	"frame": {"x":1000,"y":87,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0018",
+	"frame": {"x":0,"y":174,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0019",
+	"frame": {"x":125,"y":174,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0020",
+	"frame": {"x":250,"y":174,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0021",
+	"frame": {"x":375,"y":174,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0022",
+	"frame": {"x":500,"y":174,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0023",
+	"frame": {"x":625,"y":174,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0024",
+	"frame": {"x":750,"y":174,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0025",
+	"frame": {"x":875,"y":174,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0026",
+	"frame": {"x":1000,"y":174,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0027",
+	"frame": {"x":0,"y":261,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0028",
+	"frame": {"x":125,"y":261,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0029",
+	"frame": {"x":250,"y":261,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0030",
+	"frame": {"x":375,"y":261,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0031",
+	"frame": {"x":500,"y":261,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0032",
+	"frame": {"x":625,"y":261,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0033",
+	"frame": {"x":750,"y":261,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0034",
+	"frame": {"x":875,"y":261,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0035",
+	"frame": {"x":1000,"y":261,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0036",
+	"frame": {"x":0,"y":348,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0037",
+	"frame": {"x":125,"y":348,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0038",
+	"frame": {"x":250,"y":348,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0039",
+	"frame": {"x":375,"y":348,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0040",
+	"frame": {"x":500,"y":348,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0041",
+	"frame": {"x":625,"y":348,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0042",
+	"frame": {"x":750,"y":348,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0043",
+	"frame": {"x":875,"y":348,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0044",
+	"frame": {"x":1000,"y":348,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0045",
+	"frame": {"x":0,"y":435,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0046",
+	"frame": {"x":125,"y":435,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0047",
+	"frame": {"x":250,"y":435,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0048",
+	"frame": {"x":375,"y":435,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0049",
+	"frame": {"x":500,"y":435,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0050",
+	"frame": {"x":625,"y":435,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0051",
+	"frame": {"x":750,"y":435,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0052",
+	"frame": {"x":875,"y":435,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0053",
+	"frame": {"x":1000,"y":435,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0054",
+	"frame": {"x":0,"y":522,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0055",
+	"frame": {"x":125,"y":522,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0056",
+	"frame": {"x":250,"y":522,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0057",
+	"frame": {"x":375,"y":522,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0058",
+	"frame": {"x":500,"y":522,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0059",
+	"frame": {"x":625,"y":522,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0060",
+	"frame": {"x":750,"y":522,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0061",
+	"frame": {"x":875,"y":522,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0062",
+	"frame": {"x":1000,"y":522,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0063",
+	"frame": {"x":0,"y":609,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0064",
+	"frame": {"x":125,"y":609,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0065",
+	"frame": {"x":250,"y":609,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0066",
+	"frame": {"x":375,"y":609,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0067",
+	"frame": {"x":500,"y":609,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0068",
+	"frame": {"x":625,"y":609,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0069",
+	"frame": {"x":750,"y":609,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0070",
+	"frame": {"x":875,"y":609,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0071",
+	"frame": {"x":1000,"y":609,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0072",
+	"frame": {"x":0,"y":696,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0073",
+	"frame": {"x":125,"y":696,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0074",
+	"frame": {"x":250,"y":696,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0075",
+	"frame": {"x":375,"y":696,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0076",
+	"frame": {"x":500,"y":696,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0077",
+	"frame": {"x":625,"y":696,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0078",
+	"frame": {"x":750,"y":696,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0079",
+	"frame": {"x":875,"y":696,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0080",
+	"frame": {"x":1000,"y":696,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0081",
+	"frame": {"x":0,"y":783,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0082",
+	"frame": {"x":125,"y":783,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0083",
+	"frame": {"x":250,"y":783,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0084",
+	"frame": {"x":375,"y":783,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0085",
+	"frame": {"x":500,"y":783,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0086",
+	"frame": {"x":625,"y":783,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0087",
+	"frame": {"x":750,"y":783,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0088",
+	"frame": {"x":875,"y":783,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0089",
+	"frame": {"x":1000,"y":783,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0090",
+	"frame": {"x":0,"y":870,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0091",
+	"frame": {"x":125,"y":870,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0092",
+	"frame": {"x":250,"y":870,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0093",
+	"frame": {"x":375,"y":870,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0094",
+	"frame": {"x":500,"y":870,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0095",
+	"frame": {"x":625,"y":870,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0096",
+	"frame": {"x":750,"y":870,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}
+,{
+	"filename": "Necromancer0097",
+	"frame": {"x":875,"y":870,"w":125,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":87},
+	"sourceSize": {"w":125,"h":87},
+	"regPoint": {"x":38,"y":84.85}
+}],
+"meta": {
+	"app": "Adobe Flash CS6",
+	"version": "12.0.0.481",
+	"image": "necromancer.png",
+	"format": "RGBA8888",
+	"size": {"w":1127,"h":958},
+	"scale": "1"
+}
+}
