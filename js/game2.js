@@ -151,7 +151,7 @@ function getSelectionRing(target, pointer) {
 }
 
 function update() {
-    var i, j, item, p;
+    var i, j, item, p, range;
     var offset = 4;
     
     for (i = 0; i < trees.length; i += 1) {
@@ -165,15 +165,19 @@ function update() {
     for (i = 0; i < characters.length; i += 1) {
         item = characters[i];
         if (item.chasing) {
-            offset = 40; //TODO set offset to a meaningful value according to the characters width
-            if ((item.x > item.chasing.x - offset) && (item.x < item.chasing.x + offset) && (item.y > item.chasing.y - offset/2) && (item.y < item.chasing.y + offset/2)) {
+            range = 40; //TODO set range to a meaningful value according to the characters width -> item.range
+            //If it is chasing a character, and is in attack range (range)
+            if ((item.x > item.chasing.x - range) && (item.x < item.chasing.x + range) && (item.y > item.chasing.y - range/2) && (item.y < item.chasing.y + range/2)) {
+                //if timer is null or time elapsed greater than item.attackInterval
                 item.isMoving = false;
                 item.animations.play('attack', null, false);
+                //reset timer
+                //decrease enemy's health -- if its dead, play death animation, item.chasing = null
                 if (item.chasing.animations.currentAnim.name === 'idle') {
                     item.chasing.animations.play('hit', null, false);
                 }
                 item.body.velocity.setTo(0, 0);
-                item.chasing = null;
+                //item.chasing = null;
             }
             else {
                 p = new Phaser.Point(item.chasing.x, item.chasing.y);
