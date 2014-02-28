@@ -5,6 +5,7 @@ function preload() {
     game.load.atlas('fighter', 'assets/fighter.png', 'assets/fighter.json');
     game.load.atlas('wolf', 'assets/wolf.png', 'assets/wolf.json');
     game.load.atlas('necromancer', 'assets/necromancer.png', 'assets/necromancer.json');
+    game.load.atlas('powers', 'assets/powers.png', 'assets/powers.json');
     game.load.image('bg', 'assets/woods_bg.png');
     game.load.image('tree1', 'assets/woods_tree1.png');
     game.load.image('tree2', 'assets/woods_tree2.png');
@@ -20,7 +21,7 @@ function preload() {
     game.load.spritesheet('buttonP', 'assets/button_pause.png', 42, 42);
 }
 
-var wizard, wolf, fighter, necromancer, sRing, mode, doNotProcess;
+var wizard, wolf, fighter, necromancer, sRing, mode, doNotProcess, fireballs, bolts;
 var move, bg;
 var contador = 0;
 var g;
@@ -33,6 +34,8 @@ function create() {
     var i;
     
     mode = "normal";
+    
+    
     
     bg = game.add.sprite(0, 0, 'bg');
     elements = game.add.group();
@@ -82,6 +85,7 @@ function create() {
 
     wizard.body.setRectangle(40, 30, 15, 60);
     wizard.inputEnabled = true;
+    wizard.input.pixelPerfect = true;
     wizard.input.useHandCursor = true;
     wizard.anchor.setTo(0.35, 0.8); //anchor exacto: (regPoint.x/sourceSize.w, regPoint.y/sourceSize.h)
     wizard.isPC = true;
@@ -114,6 +118,7 @@ function create() {
 
     fighter.body.setRectangle(40, 30, 20, 68);
     fighter.inputEnabled = true;
+    fighter.input.pixelPerfect = true;
     fighter.input.useHandCursor = true;
     fighter.anchor.setTo(0.37, 0.88); //anchor exacto: (regPoint.x/sourceSize.w, regPoint.y/sourceSize.h)
     fighter.isPC = true;
@@ -146,6 +151,7 @@ function create() {
     
     wolf.body.setRectangle(50, 30, 40, 65);
     wolf.inputEnabled = true;
+    wolf.input.pixelPerfect = true;
     wolf.input.useHandCursor = true;
     wolf.anchor.setTo(0.5, 0.88);
     wolf.isPC = false;
@@ -166,11 +172,14 @@ function create() {
     necromancer.animations.add('idle', Phaser.Animation.generateFrameNames('Necromancer', 42, 62, '', 4), 30, true, false);
     necromancer.animations.add('death', Phaser.Animation.generateFrameNames('Necromancer', 63, 87, '', 4), 24, true, false);
     necromancer.animations.add('hit', Phaser.Animation.generateFrameNames('Necromancer', 88, 97, '', 4), 24, true, false);
+    necromancer.animations.add('heal', Phaser.Animation.generateFrameNames('Necromancer', 98, 122, '', 4), 24, true, false);
+    necromancer.animations.add('bolt', Phaser.Animation.generateFrameNames('Necromancer', 123, 144, '', 4), 24, true, false);
     
     necromancer.animations.play('idle', null, true);
     
     necromancer.body.setRectangle(40, 30, 20, 53);
     necromancer.inputEnabled = true;
+    necromancer.input.pixelPerfect = true;
     necromancer.input.useHandCursor = true;
     necromancer.anchor.setTo(0.33, 0.97);
     necromancer.isPC = false;
@@ -214,7 +223,21 @@ function create() {
     for (i = 0; i < characters.length; i += 1) {
         characters[i].radius = characters[i].body.shape.w * Math.SQRT1_2;
     }
-    necromancer.chasing = fighter;  //just for testing
+    
+    fireballs = game.add.group();
+    bolts = game.add.group();
+    for (var i = 0; i < 2; i++)
+    {
+        var powerAnimation = fireballs.create(0, 0, 'powers', [0], false);
+        powerAnimation.anchor.setTo(0.61, 0.51);
+        powerAnimation.animations.add('fireball', Phaser.Animation.generateFrameNames('Powers', 0, 7, '', 4), 30, true, false);
+        powerAnimation = bolts.create(0, 0, 'powers', [0], false);
+        powerAnimation.anchor.setTo(0.61, 0.51);
+        powerAnimation.animations.add('fireball', Phaser.Animation.generateFrameNames('Powers', 0, 7, '', 4), 30, true, false);
+    }
+    fireballs.setAll('outOfBoundsKill', true);
+    bolts.setAll('outOfBoundsKill', true);
+    //necromancer.chasing = fighter;  //just for testing
 }
 
 //function getSelectionRing(target, pointer) {
@@ -258,6 +281,22 @@ function getSelectionRing(target, pointer) {
                         sRing.selected.body.velocity.setTo(0, 0);
                         sRing.selected.isMoving = false;
                         mode = "normal";
+                        var powerAnimation = fireballs.getFirstDead();
+                        var offsetX = 95;
+                        if (target.x > wizard.x) {
+                            wizard.scale.x = 1;
+                        }
+                        else {
+                            wizard.scale.x = -1;
+                            offsetX = -95;
+                        }
+                        
+                        game.time.events.add(1000, function () { 
+                            powerAnimation.reset(wizard.x + offsetX, wizard.y - 35);
+                            powerAnimation.play('fireball', null, true);
+                            game.physics.moveToXY(powerAnimation, target.x, target.y - 20, 500);
+                            powerAnimation.rotation = game.physics.angleBetween(powerAnimation, target);
+                        }, this);
                     }
                     else {
                         alert("not a valid target");
@@ -276,6 +315,9 @@ function getSelectionRing(target, pointer) {
 
 function update() {
 //    wolf.chasing = wizard;
+    
+    
+    
     var i, j, item, p, range, timeElapsed;
     var offset = 4;
     
@@ -284,6 +326,14 @@ function update() {
             game.physics.collide(trees[i], characters[j]);
         }
     }
+    
+    for (i = 0; i < characters.length; i += 1) {
+        if (!characters[i].isPC) {
+            game.physics.overlap(fireballs, characters[i], fireballHitEnemy, null, this);
+        }
+    }
+    
+
     
     getSelectionRing();
 
@@ -473,14 +523,43 @@ function checkValidDest(player, target) {
     return true;
 }
 
-function fireball () {
+function fireball() {
     mode = "select"; //TODO this should depend on the type of spell/power -> affecting self/target
+}
+
+function fireballHitEnemy(enemy, fireball) {
+    fireball.kill();
+    //TODO enemy.damage
+
+}
+
+function damage(value, attacker)
+{
+    this.health -= value;
+    if (this.isPC)
+    {
+        this.healthBar.height = (this.health < 0)? 71 : 71 - this.health * 71 /this.maxHealth;
+    }
+    if (this.health <= 0)
+    {
+        this.animations.play('death', null, false);
+        this.alive = false;
+        this.body.velocity.setTo(0, 0);
+        attacker.chasing = null;
+    }
+    else if (this.animations.currentAnim.name === 'idle') {
+        this.animations.play('hit', null, false);
+    }
 }
 
 function render() {
 //    game.debug.renderSpriteInfo(trees[3], 32, 32);
+    
 //    game.debug.renderSpriteBounds(wizard);
 //    game.debug.renderSpriteBounds(wolf);
+//    game.debug.renderSpriteBounds(fighter);
+//    game.debug.renderSpriteBounds(necromancer);
+//    
 //    game.debug.renderPoint(wizard.input._tempPoint);
 //    game.debug.renderSpriteBody(wizard);
 //    game.debug.renderSpriteBody(wolf);

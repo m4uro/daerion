@@ -1,0 +1,182 @@
+﻿{"frames": [
+
+{
+	"filename": "Powers0000",
+	"frame": {"x":0,"y":0,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0001",
+	"frame": {"x":87,"y":0,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0002",
+	"frame": {"x":174,"y":0,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0003",
+	"frame": {"x":261,"y":0,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0004",
+	"frame": {"x":348,"y":0,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0005",
+	"frame": {"x":0,"y":43,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0006",
+	"frame": {"x":87,"y":43,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0007",
+	"frame": {"x":174,"y":43,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0008",
+	"frame": {"x":261,"y":43,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0009",
+	"frame": {"x":348,"y":43,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0010",
+	"frame": {"x":0,"y":86,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0011",
+	"frame": {"x":87,"y":86,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0012",
+	"frame": {"x":174,"y":86,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0013",
+	"frame": {"x":261,"y":86,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0014",
+	"frame": {"x":348,"y":86,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0015",
+	"frame": {"x":0,"y":129,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0016",
+	"frame": {"x":87,"y":129,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0017",
+	"frame": {"x":174,"y":129,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}
+,{
+	"filename": "Powers0018",
+	"frame": {"x":261,"y":129,"w":87,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":43},
+	"sourceSize": {"w":87,"h":43},
+	"regPoint": {"x":53.9,"y":22.1}
+}],
+"meta": {
+	"app": "Adobe Flash CS6",
+	"version": "12.0.0.481",
+	"image": "powers.png",
+	"format": "RGBA8888",
+	"size": {"w":443,"h":172},
+	"scale": "1"
+}
+}
