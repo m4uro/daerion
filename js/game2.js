@@ -35,8 +35,6 @@ function create() {
     
     mode = "normal";
     
-    
-    
     bg = game.add.sprite(0, 0, 'bg');
     elements = game.add.group();
     sRing = game.add.sprite(0, 0, 'sRing');
@@ -70,9 +68,6 @@ function create() {
     elements.add(wolf);
     elements.add(necromancer);
     elements.add(sRing);
-//    trees[3].inputEnabled = true;
-//    trees[3].input.enableDrag(true);
-    //game.stage.backgroundColor = '#555';
     
     wizard.animations.add('attack', Phaser.Animation.generateFrameNames('Wizard', 0, 19, '', 4), 30, true, false);
     wizard.animations.add('idle', Phaser.Animation.generateFrameNames('Wizard', 20, 49, '', 4), 30, true, false);
@@ -202,10 +197,6 @@ function create() {
     g.fillColor = 0xffffff;
     g.fillAlpha = 0.72;
     g.drawRect(25, bg.height - 48, bg.width - 50, 28);
-//    game.add.sprite(20, bg.height - 56, 'buttonP');
-//    game.add.sprite(400, bg.height - 56, 'buttonF');
-//    game.add.sprite(450, bg.height - 56, 'buttonL');
-//    game.add.sprite(bg.width - 65, bg.height - 56, 'buttonP');
     
     game.add.button(400, bg.height - 56, 'buttonF', fireball, this, 0, 0, 1);//over, normal, press
     game.add.button(20, bg.height - 56, 'buttonP', fireball, this, 0, 0, 1);
@@ -241,26 +232,6 @@ function create() {
 
     //necromancer.chasing = fighter;  //just for testing
 }
-
-//function getSelectionRing(target, pointer) {
-//    if (pointer && (pointer.button === 2)) { //right click
-//        if (!alreadyProcessed) {
-//            if (mode === "normal" && sRing.selected && sRing.selected.isPC && target && (!target.isPC) && target.alive) { //player wants to attack
-//                sRing.selected.chasing = target;
-//            }
-//            else if (mode === "select") //cancel attack
-//            {
-//                mode = "normal";
-//            }
-//        }
-//    }
-//    else if (target || (target = sRing.selected)) {
-//        sRing.scale.x = target.width / 80;
-//        sRing.x = target.x - sRing.width / 2 + (target.offsetX || 0);
-//        sRing.y = target.y - sRing.height / 2 + (target.offsetY || 0);
-//        sRing.selected = target;
-//    }
-//}
 
 function getSelectionRing(target, pointer) {
     if (pointer) {
@@ -393,14 +364,6 @@ function update() {
             }
         }
     }
-    
-//    if (wolf.isMoving) {
-//        if ((wolf.x > wolf.dest.x - offset) && (wolf.x < wolf.dest.x + offset) && (wolf.y > wolf.dest.y - offset) && (wolf.y < wolf.dest.y + offset)) {
-//            wolf.isMoving = false;
-//            wolf.animations.play('idle', null, true);
-//            wolf.body.velocity.setTo(0, 0);
-//        }
-//    }
 
     elements.sort();
 }
@@ -430,19 +393,6 @@ function mouseClick(event) {
         doNotProcess = false;
     }
 }
-
-//function changeAnimation() {
-//    var animations = ['attack', 'idle', 'move'];
-//    contador = (contador + 1) % 3;
-//    wizard.animations.play(animations[contador], null, true);
-//    if (contador === 2) {
-//        move = true;
-//    } else {
-//        move = false;
-//    }
-//    wizard.scale.x *= -1; //flipped
-//    wolf.scale.x *= -1;
-//}
 
 function moveTo(x, y, target) {
     game.physics.moveToXY(target, x, y, target.speed);
