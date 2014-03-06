@@ -6,6 +6,7 @@ function preload() {
     game.load.atlas('wolf', 'assets/wolf.png', 'assets/wolf.json');
     game.load.atlas('necromancer', 'assets/necromancer.png', 'assets/necromancer.json');
     game.load.atlas('powers', 'assets/powers.png', 'assets/powers.json');
+    game.load.atlas('effects', 'assets/effects.png', 'assets/effects.json');
     game.load.image('bg', 'assets/woods_bg.png');
     game.load.image('tree1', 'assets/woods_tree1.png');
     game.load.image('tree2', 'assets/woods_tree2.png');
@@ -22,6 +23,7 @@ function preload() {
 }
 
 var wizard, wolf, fighter, necromancer, sRing, mode, doNotProcess, fireballs, bolts;
+var effects;
 var move, bg;
 var contador = 0;
 var g;
@@ -49,6 +51,7 @@ function create() {
     bg = game.add.sprite(0, 0, 'bg');
     elements = game.add.group();
     sRing = game.add.sprite(0, 0, 'sRing');
+    sRing.visible = false;
     
     trees[0] = elements.create(269, 301, 'tree2');
     trees[0].anchor.setTo(0.4, 0.98);
@@ -98,8 +101,8 @@ function create() {
     wizard.timer = game.time.create(false);
     wizard.attackInterval = 1000; //milliseconds
     wizard.range = 40;
-    wizard.health = 200;
-    wizard.maxHealth = 200;
+    wizard.maxHealth = 1000;
+    wizard.health = wizard.maxHealth;
     wizard.attackDamage = 20;
     wizard.offsetX = 0;
     wizard.offsetY = 0;
@@ -131,8 +134,8 @@ function create() {
     fighter.timer = game.time.create(false);
     fighter.attackInterval = 1000; //milliseconds
     fighter.range = 40;
-    fighter.health = 250;
-    fighter.maxHealth = 200;
+    fighter.maxHealth = 1200;
+    fighter.health = fighter.maxHealth;
     fighter.attackDamage = 30;
     fighter.offsetX = 0;
     fighter.offsetY = 0;
@@ -164,8 +167,8 @@ function create() {
     wolf.timer = game.time.create(false);
     wolf.attackInterval = 1000; //milliseconds
     wolf.range = 60;
-    wolf.health = 200;
-    wolf.maxHealth = 200;
+    wolf.maxHealth = 350;
+    wolf.health = wolf.maxHealth;
     wolf.attackDamage = 50;
     wolf.offsetX = -3;
     wolf.offsetY = -5;
@@ -173,10 +176,11 @@ function create() {
     wolf.events.onInputDown.add(getSelectionRing);
     wolf.think = wolfThinking;
     wolf.parameters = {
-        close: 10,
-        vulnerable: 15,
+        close: 15,
+        vulnerable: 5,
         strong: 10
     };
+    wolf.restoreParameters = restoreParameters;
     
     necromancer.animations.add('attack', Phaser.Animation.generateFrameNames('Necromancer', 0, 15, '', 4), 30, true, false);
     necromancer.animations.add('move', Phaser.Animation.generateFrameNames('Necromancer', 16, 41, '', 4), 30, true, false);
@@ -197,16 +201,22 @@ function create() {
     necromancer.timer = game.time.create(false);
     necromancer.attackInterval = 1000; //milliseconds
     necromancer.range = 40;
-    necromancer.health = 200;
-    necromancer.maxHealth = 200;
+    necromancer.maxHealth = 300;
+    necromancer.health = necromancer.maxHealth;
     necromancer.attackDamage = 20;
     necromancer.offsetX = 0;
     necromancer.offsetY = 0;
     necromancer.speed = 100;
     necromancer.events.onInputDown.add(getSelectionRing);
     necromancer.think = necroThinking;
+    necromancer.bolt = bolt;
+    necromancer.heal = heal;
+    necromancer.hasMinions = hasMinions;
     necromancer.healCoolDown = 3000;
     necromancer.boltCoolDown = 3000;
+    necromancer.minions = [];
+    necromancer.healPower = 15;
+    necromancer.isLeader = true;
     
     //Drawing transparent rectangles for bottom interface:
     g = game.add.graphics(0, 0);
@@ -231,9 +241,17 @@ function create() {
         trees[i].radius = trees[i].body.shape.w * Math.SQRT1_2 - 5;
     }
     for (i = 0; i < characters.length; i += 1) {
-        characters[i].radius = characters[i].body.shape.w * Math.SQRT1_2 - 5;
-        characters[i].damage = damage;
-        characters[i].moveTo = moveTo;
+        c = characters[i];
+        c.radius = characters[i].body.shape.w * Math.SQRT1_2 - 5;
+        c.damage = damage;
+        c.moveTo = moveTo;
+        if (!c.isPC) {
+            c.evade = evade;
+            if (c !== necromancer) {
+                necromancer.minions.push(c);
+                c.leader = necromancer;
+            }
+        }
     }
     
     fireballs = game.add.group();
@@ -248,6 +266,16 @@ function create() {
     }
     fireballs.setAll('outOfBoundsKill', true);
     bolts.setAll('outOfBoundsKill', true);
+    
+    effects = game.add.group();
+    for (i = 0; i < 3; i += 1) {
+        var e = effects.create(0, 0, 'effects', [0], false);
+        e.anchor.setTo(0.52, 0.98);
+        e.animations.add('heal', Phaser.Animation.generateFrameNames('Effects', 0, 14, '', 4), 30, true, false);
+        e.animations.add('fireball', Phaser.Animation.generateFrameNames('Effects', 15, 25, '', 4), 30, true, false);
+        e.animations.add('bolt', Phaser.Animation.generateFrameNames('Effects', 26, 37, '', 4), 30, true, false);
+        
+    }
 
 }
 
@@ -303,14 +331,11 @@ function getSelectionRing(target, pointer) {
         sRing.x = target.x - sRing.width / 2 + (target.offsetX || 0);
         sRing.y = target.y - sRing.height / 2 + (target.offsetY || 0);
         sRing.selected = target;
+        sRing.visible = true;
     }
 }
 
 function update() {
-    
-    
-    necromancer.think();
-    
     var i, j, item, p, range, timeElapsed;
     var offset = 4;
     
@@ -338,6 +363,9 @@ function update() {
     for (i = 0; i < characters.length; i += 1) {
         item = characters[i];
         if (item.alive) {
+            if (!item.isPC) {
+                item.think();
+            }
             if (item.chasing) {
                 //If it is chasing a character, and is in attack range (item.range)
                 if (item.animations.currentAnim.name !== "attack") {
@@ -345,6 +373,7 @@ function update() {
                         //if timer is null or time elapsed greater than item.attackInterval
                         if ((item.timeOfLastAttack === undefined) || (game.time.elapsedSince(item.timeOfLastAttack) > item.attackInterval))
                         {
+                            (item.chasing.x > item.x) ? item.scale.x = 1 : item.scale.x = -1;
                             item.body.velocity.setTo(0, 0);
                             item.isMoving = false;
                             item.animations.play('attack', null, false);
@@ -393,7 +422,7 @@ function update() {
 function mouseClick(event) {
     var p;
     var selected = sRing.selected;
-    if (mode === "normal" && selected && (event.which === 3)) { //character is selected and right click TODO: replace with sRing.selected.isPC
+    if (mode === "normal" && selected && (event.which === 3) && selected.alive) { //character is selected and right click TODO: replace with sRing.selected.isPC
         selected.chasing = null;
         p = new Phaser.Point(event.clientX, event.clientY);
         if (checkValidDest(selected, p)) {
@@ -402,7 +431,7 @@ function mouseClick(event) {
             selected.isMoving = true;
             selected.animations.play('move', null, true);
             selected.trueDest = calcDest(selected, selected.dest);
-            calcDest(selected, selected.newDest); //added second calculation to avoid collision when the player is very close to the obstacle. Significant overhead
+            calcDest(selected, selected.newDest); //added second calculation to avoid collision when the player is very close to the obstacle
             game.physics.moveToXY(selected, selected.newDest.x, selected.newDest.y, selected.speed);
         }
         doNotProcess = false;
@@ -501,11 +530,21 @@ function fireball() {
 function fireballHitEnemy(enemy, fireball) {
     fireball.destroy();
     enemy.damage(50);
+    var e = effects.getFirstDead();
+    if (e) {
+        e.reset(enemy.x, enemy.y);
+        e.play('fireball', null, false, true);
+    }
 }
 
 function boltHitEnemy(enemy, bolt) {
     bolt.destroy();
     enemy.damage(50);
+    var e = effects.getFirstDead();
+    if (e) {
+        e.reset(enemy.x, enemy.y);
+        e.play('bolt', null, false, true);
+    }
 }
 
 function damage(value)
@@ -520,6 +559,11 @@ function damage(value)
         this.play('death', null, false);
         this.alive = false;
         this.body.velocity.setTo(0, 0);
+        if (this.isLeader) {
+            for (i = 0; i < this.minions.length; i++) {
+                this.minions[i].restoreParameters();
+            }
+        }
     }
     else if (this.animations.currentAnim.name === 'idle') {
         this.animations.play('hit', null, false);
@@ -527,64 +571,27 @@ function damage(value)
 }
 
 function wolfThinking() {
-    var i, distance, remainingH, strength, aux, indexC, indexV, indexS, min;
-    var totals = [];
-    
-    distance = Infinity;
-    remainingH = Infinity;
-    strength = 0;
-    index = -1;
-    aux = -1;
-//    attack closest
-//    for (i = 0; i < characters.length; i += 1) {
-//        if (characters[i].isPC && characters[i].alive) {
-//            aux = game.physics.distanceBetween(this, characters[i]);
-//            if (aux < distance) {
-//                distance = aux;
-//                index = i;
-//            }
-//        }
-//    }
-//    (index >= 0) ? this.chasing = characters[index] : this.chasing = null;
-    
-    //attack according to parameters
-//    for (i = 0; i < characters.length; i += 1) {
-//        totals[i] = 0;
-//        if (characters[i].isPC && characters[i].alive) {
-//            aux = game.physics.distanceBetween(this, characters[i]);
-//            if (aux < distance) {
-//                distance = aux;
-//                indexC = i;
-//            }
-//            aux = characters[i].health;
-//            if (aux < remainingH) {
-//                remainingH = aux;
-//                indexV = i;
-//            }
-//            aux = characters[i].attackDamage * 1000 / characters[i].attackInterval;
-//            if (aux > strength) {
-//                strength = aux;
-//                indexS = i;
-//            }
-//        }
-//    }
-//    if (aux > 0) {
-//        totals[indexC] = this.parameters.close;
-//        totals[indexV] += this.parameters.vulnerable;
-//        totals[indexS] += this.parameters.strong;
-//        aux = 0;
-//        for (i = 0; i < characters.length; i += 1) {
-//            if (totals[i] > aux) {
-//                aux = totals[i];
-//                index = i;
-//            }
-//        }
-//    }
-//    (index >= 0) ? this.chasing = characters[index] : this.chasing = null;
-    
-    //evade
+    if (this.leader.alive) {
+        if (this.leader.threat) {
+            this.chasing = this.leader.threat;
+        }
+        else if (this.health < this.maxHealth / 4) {
+            this.evade();
+        }
+        else {
+            this.chasing = choose(this, this.parameters);
+        }
+    }
+    else {
+        this.chasing = choose(this, this.parameters);
+    }
+}
+
+function evade() {
+    var distance, aux, i, j, min, index;
     distance = 0;
     aux = -1;
+    this.chasing = null;
     for (i = 0; i < spots.length; i += 1) {
         min = Infinity;
         for (j = 0; j < characters.length; j += 1) {
@@ -604,34 +611,165 @@ function wolfThinking() {
     }
 }
 
+function choose(thisCharacter, params)
+{
+    var i, distance, remainingH, strength, aux, index, indexC, indexV, indexS;
+    var totals = [];
+    
+    distance = Infinity;
+    remainingH = Infinity;
+    strength = 0;
+    index = -1;
+    aux = -1;
+    
+    for (i = 0; i < characters.length; i += 1) {
+        totals[i] = 0;
+        if (characters[i].isPC && characters[i].alive) {
+            aux = game.physics.distanceBetween(thisCharacter, characters[i]);
+            if (aux < distance) {
+                distance = aux;
+                indexC = i;
+            }
+            aux = characters[i].health;
+            if (aux < remainingH) {
+                remainingH = aux;
+                indexV = i;
+            }
+            aux = characters[i].attackDamage * 1000 / characters[i].attackInterval;
+            if (aux > strength) {
+                strength = aux;
+                indexS = i;
+            }
+        }
+    }
+    if (aux > 0) {
+        totals[indexC] = params.close;
+        totals[indexV] += params.vulnerable;
+        totals[indexS] += params.strong;
+        aux = 0;
+        for (i = 0; i < characters.length; i += 1) {
+            if (totals[i] > aux) {
+                aux = totals[i];
+                index = i;
+            }
+        }
+    }
+    if (index >= 0) {
+        return characters[index];
+    }
+    else {
+        return null;
+    }
+}
+
 function necroThinking() {
-    //throw bolt
-//    if ((this.timeOfLastAttack === undefined) || (game.time.elapsedSince(this.timeOfLastAttack) > necromancer.boltCoolDown)) {
-//        target = wizard;
-//        this.animations.play('bolt', null, false);
-//        this.body.velocity.setTo(0, 0);
-//        this.isMoving = false;
-//        this.chasing = null;
-//        var offsetX = 95;
-//        if (target.x > this.x) {
-//            this.scale.x = 1;
-//        }
-//        else {
-//            this.scale.x = -1;
-//            offsetX = -95;
-//        }
-//        this.timeOfLastAttack = game.time.now;
-//        game.time.events.add(700, function () { 
-//            var powerAnimation = bolts.getFirstDead();
-//            powerAnimation.reset(necromancer.x + offsetX, necromancer.y - 35);
-//            powerAnimation.play('bolt', null, true);
-//            game.physics.moveToXY(powerAnimation, target.x, target.y - 20, 500);
-//            powerAnimation.rotation = game.physics.angleBetween(powerAnimation, target);
-//        }, this);
-//    }
-    //heal
+    var i, distance, c, p, chosen;
+    distance = Infinity;
+    this.threat = null;
+    if (this.hasMinions()) {
+        if (this.health <= this.maxHealth / 4) { //necromancer has low health and is being attacked
+            for (i = 0; i < characters.length; i += 1) {
+                c = characters[i];
+                if (c.isPC && c.alive && c.chasing === this && game.physics.distanceBetween(this, c) < distance){
+                    distance = game.physics.distanceBetween(this, c);
+                    this.threat = c;
+                }
+            }
+            if (this.threat) {
+                this.evade();
+            }
+        }
+        else {
+            for (i = 0; i < this.minions.length; i += 1) {
+                c = this.minions[i];
+                if (c.alive && c.health < c.maxHealth/4) {
+                    this.heal(c);
+                    return;
+                }
+            }
+            //has minions and has to choose who to attack
+            p = {
+                close: 10,
+                vulnerable: 30,
+                strong: 5
+            };
+            chosen = choose(this, p);
+            if (chosen && game.physics.distanceBetween(this, chosen) > 100) {
+                this.bolt(chosen);
+            }
+            else {
+                this.chasing = chosen;
+            }
+            for (i = 0; i < this.minions.length; i += 1) {
+                c = this.minions[i];
+                if (c.alive) {
+                    c.parameters.vulnerable = 50; //alters minion behavior
+                }
+            }
+        }
+    }
+    else {
+        p = {
+            close: 20,
+            vulnerable: 15,
+            strong: 10
+        };
+        chosen = choose(this, p);
+        if (chosen && game.physics.distanceBetween(this, chosen) > 100) {
+            this.bolt(chosen);
+        }
+        else {
+            this.chasing = chosen;
+        }
+    }
+}
+
+function restoreParameters()
+{
+    this.parameters = {
+        close: 15,
+        vulnerable: 5,
+        strong: 10
+    };
+}
+
+function hasMinions() {
+    for (i = 0; i < this.minions.length; i += 1) {
+        if (this.minions[i].alive) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+function bolt(target) {
+    if ((this.timeOfLastAttack === undefined) || (game.time.elapsedSince(this.timeOfLastAttack) > necromancer.boltCoolDown)) {
+        this.animations.play('bolt', null, false);
+        this.body.velocity.setTo(0, 0);
+        this.isMoving = false;
+        this.chasing = null;
+        var offsetX = 95;
+        if (target.x > this.x) {
+            this.scale.x = 1;
+        }
+        else {
+            this.scale.x = -1;
+            offsetX = -95;
+        }
+        this.timeOfLastAttack = game.time.now;
+        game.time.events.add(700, function () { 
+            var powerAnimation = bolts.getFirstDead();
+            powerAnimation.reset(necromancer.x + offsetX, necromancer.y - 35);
+            powerAnimation.play('bolt', null, true);
+            game.physics.moveToXY(powerAnimation, target.x, target.y - 20, 500);
+            powerAnimation.rotation = game.physics.angleBetween(powerAnimation, target);
+        }, this);
+    }
+}
+
+function heal(target) {
     if ((this.timeOfLastHeal === undefined) || (game.time.elapsedSince(this.timeOfLastHeal) > necromancer.healCoolDown)) {
-        target = wolf;
         this.animations.play('heal', null, false);
         this.body.velocity.setTo(0, 0);
         this.isMoving = false;
@@ -639,7 +777,12 @@ function necroThinking() {
         
         this.timeOfLastHeal = game.time.now;
         (target.x > this.x) ? this.scale.x = 1 : this.scale.x = -1;
-        target.health = (target.health + 30 > target.maxHealth) ? target.maxHealth : target.health + 30;
+        target.health = (target.health + this.healPower > target.maxHealth) ? target.maxHealth : target.health + this.healPower;
+        var e = effects.getFirstDead();
+        if (e) {
+            e.reset(target.x, target.y);
+            e.play('heal', null, false, true);
+        }
     }
 }
 
@@ -664,7 +807,7 @@ function render() {
 //    }
 //    game.debug.renderPoint(new Phaser.Point(wizard.x, wizard.y));
 //    game.debug.renderPoint(new Phaser.Point(wolf.x, wolf.y));
-//    game.debug.renderPoint(new Phaser.Point(necromancer.x, necromancer.y));
+//    game.debug.renderPoint(new Phaser.Point(wolf.x, wolf.y));
 //    game.debug.renderPhysicsBody(wizard.body);
 //    game.debug.renderPhysicsBody(wolf.body);
 //    game.debug.renderSpriteBody(wizard);
