@@ -14,7 +14,7 @@ function preload() {
     game.load.image('sRing', 'assets/selection_ring.png');
     game.load.image('iconWizard', 'assets/icon_wizard.png');
     game.load.image('iconFighter', 'assets/icon_fighter.png');
-    game.load.image('red','assets/red.png');
+    game.load.image('red', 'assets/red.png');
     game.load.bitmapFont('agency', 'assets/agency.png', 'assets/agency.xml');
     game.load.spritesheet('buttonF', 'assets/button_fire.png', 42, 42);
     game.load.spritesheet('buttonL', 'assets/button_lightning.png', 42, 42);
@@ -29,9 +29,20 @@ var text;
 var elements;
 var trees = [];
 var characters = [];
+var spots = [];
 
 function create() {
     var i;
+    
+    spots.push(new Phaser.Point(125, 292));
+    spots.push(new Phaser.Point(462, 313));
+    spots.push(new Phaser.Point(653, 318));
+    spots.push(new Phaser.Point(229, 430));
+    spots.push(new Phaser.Point(494, 436));
+    spots.push(new Phaser.Point(770, 451));
+    spots.push(new Phaser.Point(125, 551));
+    spots.push(new Phaser.Point(441, 547));
+    spots.push(new Phaser.Point(729, 535));
     
     mode = "normal";
     
@@ -120,7 +131,7 @@ function create() {
     fighter.timer = game.time.create(false);
     fighter.attackInterval = 1000; //milliseconds
     fighter.range = 40;
-    fighter.health = 200;
+    fighter.health = 250;
     fighter.maxHealth = 200;
     fighter.attackDamage = 30;
     fighter.offsetX = 0;
@@ -155,12 +166,17 @@ function create() {
     wolf.range = 60;
     wolf.health = 200;
     wolf.maxHealth = 200;
-    wolf.attackDamage = 30;
+    wolf.attackDamage = 50;
     wolf.offsetX = -3;
     wolf.offsetY = -5;
     wolf.speed = 200;
     wolf.events.onInputDown.add(getSelectionRing);
-    
+    wolf.think = wolfThinking;
+    wolf.parameters = {
+        close: 10,
+        vulnerable: 15,
+        strong: 10
+    };
     
     necromancer.animations.add('attack', Phaser.Animation.generateFrameNames('Necromancer', 0, 15, '', 4), 30, true, false);
     necromancer.animations.add('move', Phaser.Animation.generateFrameNames('Necromancer', 16, 41, '', 4), 30, true, false);
@@ -188,6 +204,9 @@ function create() {
     necromancer.offsetY = 0;
     necromancer.speed = 100;
     necromancer.events.onInputDown.add(getSelectionRing);
+    necromancer.think = necroThinking;
+    necromancer.healCoolDown = 3000;
+    necromancer.boltCoolDown = 3000;
     
     //Drawing transparent rectangles for bottom interface:
     g = game.add.graphics(0, 0);
@@ -214,12 +233,12 @@ function create() {
     for (i = 0; i < characters.length; i += 1) {
         characters[i].radius = characters[i].body.shape.w * Math.SQRT1_2 - 5;
         characters[i].damage = damage;
+        characters[i].moveTo = moveTo;
     }
     
     fireballs = game.add.group();
     bolts = game.add.group();
-    for (var i = 0; i < 100; i++)
-    {
+    for (i = 0; i < 100; i += 1) {
         var powerAnimation = fireballs.create(0, 0, 'powers', [0], false);
         powerAnimation.anchor.setTo(0.61, 0.51);
         powerAnimation.animations.add('fireball', Phaser.Animation.generateFrameNames('Powers', 0, 7, '', 4), 30, true, false);
@@ -230,7 +249,6 @@ function create() {
     fireballs.setAll('outOfBoundsKill', true);
     bolts.setAll('outOfBoundsKill', true);
 
-    //necromancer.chasing = fighter;  //just for testing
 }
 
 function getSelectionRing(target, pointer) {
@@ -289,9 +307,9 @@ function getSelectionRing(target, pointer) {
 }
 
 function update() {
-//    wolf.chasing = wizard;
     
     
+    necromancer.think();
     
     var i, j, item, p, range, timeElapsed;
     var offset = 4;
@@ -303,8 +321,13 @@ function update() {
     }
     
     for (i = 0; i < characters.length; i += 1) {
-        if (!characters[i].isPC && characters[i].alive) {
-            game.physics.overlap(fireballs, characters[i], fireballHitEnemy, null, this);
+        if (characters[i].alive) {
+            if (!characters[i].isPC) {
+                game.physics.overlap(fireballs, characters[i], fireballHitEnemy, null, this);
+            }
+            else {
+                game.physics.overlap(bolts, characters[i], boltHitEnemy, null, this);
+            }
         }
     }
     
@@ -327,11 +350,10 @@ function update() {
                             item.animations.play('attack', null, false);
                             //reset/fire timer
                             item.timeOfLastAttack = game.time.now;
-                            //decrease enemy's health -- if its dead, play death animation, item.chasing = null
-                            item.chasing.health -= item.attackDamage;
                             item.chasing.damage(item.attackDamage);
-                            if (item.chasing.alive === false)
+                            if (item.chasing.alive === false) {
                                 item.chasing = null;
+                            }
                         }
                     }
                     else {
@@ -394,8 +416,14 @@ function mouseClick(event) {
     }
 }
 
-function moveTo(x, y, target) {
-    game.physics.moveToXY(target, x, y, target.speed);
+function moveTo(target) {
+    (target.x > this.x) ? this.scale.x = 1 : this.scale.x = -1;
+    this.dest = target;
+    this.isMoving = true;
+    this.animations.play('move', null, true);
+    this.trueDest = calcDest(this, this.dest);
+    calcDest(this, this.newDest);
+    game.physics.moveToXY(this, this.newDest.x, this.newDest.y, this.speed);
 }
 
 
@@ -475,6 +503,11 @@ function fireballHitEnemy(enemy, fireball) {
     enemy.damage(50);
 }
 
+function boltHitEnemy(enemy, bolt) {
+    bolt.destroy();
+    enemy.damage(50);
+}
+
 function damage(value)
 {
     this.health -= value;
@@ -493,8 +526,125 @@ function damage(value)
     }
 }
 
+function wolfThinking() {
+    var i, distance, remainingH, strength, aux, indexC, indexV, indexS, min;
+    var totals = [];
+    
+    distance = Infinity;
+    remainingH = Infinity;
+    strength = 0;
+    index = -1;
+    aux = -1;
+//    attack closest
+//    for (i = 0; i < characters.length; i += 1) {
+//        if (characters[i].isPC && characters[i].alive) {
+//            aux = game.physics.distanceBetween(this, characters[i]);
+//            if (aux < distance) {
+//                distance = aux;
+//                index = i;
+//            }
+//        }
+//    }
+//    (index >= 0) ? this.chasing = characters[index] : this.chasing = null;
+    
+    //attack according to parameters
+//    for (i = 0; i < characters.length; i += 1) {
+//        totals[i] = 0;
+//        if (characters[i].isPC && characters[i].alive) {
+//            aux = game.physics.distanceBetween(this, characters[i]);
+//            if (aux < distance) {
+//                distance = aux;
+//                indexC = i;
+//            }
+//            aux = characters[i].health;
+//            if (aux < remainingH) {
+//                remainingH = aux;
+//                indexV = i;
+//            }
+//            aux = characters[i].attackDamage * 1000 / characters[i].attackInterval;
+//            if (aux > strength) {
+//                strength = aux;
+//                indexS = i;
+//            }
+//        }
+//    }
+//    if (aux > 0) {
+//        totals[indexC] = this.parameters.close;
+//        totals[indexV] += this.parameters.vulnerable;
+//        totals[indexS] += this.parameters.strong;
+//        aux = 0;
+//        for (i = 0; i < characters.length; i += 1) {
+//            if (totals[i] > aux) {
+//                aux = totals[i];
+//                index = i;
+//            }
+//        }
+//    }
+//    (index >= 0) ? this.chasing = characters[index] : this.chasing = null;
+    
+    //evade
+    distance = 0;
+    aux = -1;
+    for (i = 0; i < spots.length; i += 1) {
+        min = Infinity;
+        for (j = 0; j < characters.length; j += 1) {
+            if (characters[j].isPC && characters[j].alive) {
+                aux = game.physics.distanceBetween(spots[i], characters[j]);
+                if (aux < min) min = aux;
+            }
+        }
+        if (min > distance && aux > 0) {
+            distance = min;
+            index = i;
+        }
+    }
+    
+    if (game.physics.distanceBetween(this, spots[index]) > 5) {
+        this.moveTo(spots[index]);
+    }
+}
+
+function necroThinking() {
+    //throw bolt
+//    if ((this.timeOfLastAttack === undefined) || (game.time.elapsedSince(this.timeOfLastAttack) > necromancer.boltCoolDown)) {
+//        target = wizard;
+//        this.animations.play('bolt', null, false);
+//        this.body.velocity.setTo(0, 0);
+//        this.isMoving = false;
+//        this.chasing = null;
+//        var offsetX = 95;
+//        if (target.x > this.x) {
+//            this.scale.x = 1;
+//        }
+//        else {
+//            this.scale.x = -1;
+//            offsetX = -95;
+//        }
+//        this.timeOfLastAttack = game.time.now;
+//        game.time.events.add(700, function () { 
+//            var powerAnimation = bolts.getFirstDead();
+//            powerAnimation.reset(necromancer.x + offsetX, necromancer.y - 35);
+//            powerAnimation.play('bolt', null, true);
+//            game.physics.moveToXY(powerAnimation, target.x, target.y - 20, 500);
+//            powerAnimation.rotation = game.physics.angleBetween(powerAnimation, target);
+//        }, this);
+//    }
+    //heal
+    if ((this.timeOfLastHeal === undefined) || (game.time.elapsedSince(this.timeOfLastHeal) > necromancer.healCoolDown)) {
+        target = wolf;
+        this.animations.play('heal', null, false);
+        this.body.velocity.setTo(0, 0);
+        this.isMoving = false;
+        this.chasing = null;
+        
+        this.timeOfLastHeal = game.time.now;
+        (target.x > this.x) ? this.scale.x = 1 : this.scale.x = -1;
+        target.health = (target.health + 30 > target.maxHealth) ? target.maxHealth : target.health + 30;
+    }
+}
+
 function render() {
-//    game.debug.renderSpriteInfo(trees[3], 32, 32);
+//    game.debug.renderSpriteInfo(wolf, 32, 32);
     
 //    game.debug.renderSpriteBounds(wizard);
 //    game.debug.renderSpriteBounds(wolf);
