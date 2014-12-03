@@ -219,11 +219,11 @@ function create() {
     
     for (i = 0; i < trees.length; i += 1) {
         trees[i].body.immovable = true;
-        trees[i].radius = trees[i].body.shape.w * Math.SQRT1_2 - 5;
+        trees[i].radius = trees[i].body.shape.w * Math.SQRT1_2;
     }
     for (i = 0; i < characters.length; i += 1) {
         c = characters[i];
-        c.radius = characters[i].body.shape.w * Math.SQRT1_2 - 5;
+        c.radius = characters[i].body.shape.w * Math.SQRT1_2;
         c.damage = damage;
         c.moveTo = moveTo;
         if (!c.isPC) {
@@ -443,9 +443,9 @@ function mouseClick(event) {
     var selected = sRing.selected;
     if (mode === "normal" && selected && (event.which === 3) && selected.alive) { //character is selected and right click TODO: replace with sRing.selected.isPC
         selected.chasing = null;
-        p = new Phaser.Point(event.clientX, event.clientY);
+        p = new Phaser.Point(event.clientX - game.canvas.offsetLeft, event.clientY);
         if (checkValidDest(selected, p)) {
-            (event.clientX > selected.x) ? selected.scale.x = 1 : selected.scale.x = -1;
+            ((event.clientX - game.canvas.offsetLeft) > selected.x) ? selected.scale.x = 1 : selected.scale.x = -1;
             selected.dest = p;
             selected.isMoving = true;
             selected.animations.play('move', null, true);
@@ -824,9 +824,12 @@ function render() {
 //    game.debug.renderSpriteBody(necromancer);
 //    for (i = 0; i < characters.length; i += 1) {
 //        game.debug.renderCircle(new Phaser.Circle(characters[i].x, characters[i].y, characters[i].radius * 2));
+//        game.debug.renderSpriteBody(characters[i]);
 //    }
 //    for (i = 0; i < trees.length; i += 1) {
 //        game.debug.renderCircle(new Phaser.Circle(trees[i].x, trees[i].y, trees[i].radius * 2));
+//        game.debug.renderSpriteBody(trees[i]);
+//        game.debug.renderPoint(new Phaser.Point(trees[i].x, trees[i].y));
 //    }
 //    game.debug.renderPoint(new Phaser.Point(wizard.x, wizard.y));
 //    game.debug.renderPoint(new Phaser.Point(wolf.x, wolf.y));

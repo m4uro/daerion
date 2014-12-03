@@ -1,6 +1,10 @@
 body
 {
-    margin: 0px;
+    margin: auto;
     padding: 0px;
     background-color: white;
+}
+canvas
+{
+    margin: auto;
 }
