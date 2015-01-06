@@ -22,9 +22,9 @@ function preload() {
     game.load.spritesheet('buttonP', 'assets/button_pause.png', 42, 42);
 }
 
-var wizard, wolf, fighter, necromancer, sRing, mode, doNotProcess, fireballs, bolts;
+var sRing, mode, doNotProcess, fireballs, bolts;
 var effects, spaceKey, thinkActive, numberOfWolves;
-var move, bg;
+var move;
 var contador = 0;
 var g;
 var text;
@@ -48,7 +48,7 @@ function create() {
     
     mode = "normal";
     
-    bg = game.add.sprite(0, 0, 'bg');
+    Daerion.bg = game.add.sprite(0, 0, 'bg');
     elements = game.add.group();
     sRing = game.add.sprite(0, 0, 'sRing');
     sRing.visible = false;
@@ -60,10 +60,9 @@ function create() {
     trees[1].anchor.setTo(0.57, 0.98);
     trees[1].body.setRectangle(60, 30, 75, 330);
     
-    wizard = game.add.sprite(100, 380, 'wizard');
-    fighter = game.add.sprite(200, 420, 'fighter');
-    
-    necromancer = game.add.sprite(600, 400, 'necromancer');
+    Daerion.wizard = new Daerion.Wizard(game, 100, 380, 'wizard');
+    Daerion.fighter = new Daerion.Fighter(game, 200, 420, 'fighter');
+    Daerion.necromancer = new Daerion.Necromancer(game, 600, 400, 'necromancer');
     
     trees[2] = elements.create(56, 488, 'tree1');
     trees[2].anchor.setTo(0.26, 0.98);
@@ -72,145 +71,41 @@ function create() {
     trees[3].anchor.setTo(0.5, 0.98);
     trees[3].body.setRectangle(90, 50, 50, 530);
     
-    characters[0] = wizard;
-    characters[1] = fighter;
-    characters[2] = necromancer;
+    characters[0] = Daerion.wizard;
+    characters[1] = Daerion.fighter;
+    characters[2] = Daerion.necromancer;
     
-    numberOfWolves = 1; //should be lower than spots.length
+    numberOfWolves = 3; //should be lower than spots.length
     
     for(i = 0; i < numberOfWolves; i += 1) {
         if (i <= spots.length) {
-            loadWolf(spots[i].x, spots[i].y);
+            new Daerion.Wolf(game, spots[i].x, spots[i].y, 'wolf');
         }
     }
     
-    elements.add(wizard);
-    elements.add(fighter);
+    elements.add(Daerion.wizard);
+    elements.add(Daerion.fighter);
     
-    elements.add(necromancer);
+    elements.add(Daerion.necromancer);
     elements.add(sRing);
     
-    wizard.animations.add('attack', Phaser.Animation.generateFrameNames('Wizard', 0, 19, '', 4), 30, true, false);
-    wizard.animations.add('idle', Phaser.Animation.generateFrameNames('Wizard', 20, 49, '', 4), 30, true, false);
-    wizard.animations.add('move', Phaser.Animation.generateFrameNames('Wizard', 50, 76, '', 4), 30, true, false);
-    wizard.animations.add('hit', Phaser.Animation.generateFrameNames('Wizard', 77, 86, '', 4), 24, true, false);
-    wizard.animations.add('death', Phaser.Animation.generateFrameNames('Wizard', 87, 103, '', 4), 24, true, false);
-    wizard.animations.add('fireball', Phaser.Animation.generateFrameNames('Wizard', 104, 132, '', 4), 24, true, false);
-
-    wizard.animations.play('idle', null, true);
-
-    wizard.body.setRectangle(40, 30, 15, 65);
-    wizard.inputEnabled = true;
-    wizard.input.pixelPerfect = true;
-    wizard.input.useHandCursor = true;
-    wizard.anchor.setTo(0.35, 0.8); //anchor exacto: (regPoint.x/sourceSize.w, regPoint.y/sourceSize.h)
-    wizard.isPC = true;
-    wizard.timer = game.time.create(false);
-    wizard.attackInterval = 1000; //milliseconds
-    wizard.range = 40;
-    wizard.maxHealth = 1000;
-    wizard.health = wizard.maxHealth;
-    wizard.attackDamage = 20;
-    wizard.offsetX = 0;
-    wizard.offsetY = 0;
-    wizard.speed = 100;
-    wizard.events.onInputDown.add(getSelectionRing);
-    
-    game.add.sprite(bg.width - 96, 16, 'iconWizard');
-    wizard.healthBar = game.add.sprite(bg.width - 90, 93, 'red');
-    wizard.healthBar.width = 71;
-    wizard.healthBar.height = 0;
-    wizard.healthBar.alpha = 0.5;
-    wizard.healthBar.anchor.setTo(0, 1);
-    
-    
-    fighter.animations.add('attack', Phaser.Animation.generateFrameNames('Fighter', 0, 17, '', 4), 40, true, false);
-    fighter.animations.add('move', Phaser.Animation.generateFrameNames('Fighter', 18, 45, '', 4), 30, true, false);
-    fighter.animations.add('idle', Phaser.Animation.generateFrameNames('Fighter', 46, 66, '', 4), 24, true, false);
-    fighter.animations.add('death', Phaser.Animation.generateFrameNames('Fighter', 67, 86, '', 4), 24, true, false);
-    fighter.animations.add('hit', Phaser.Animation.generateFrameNames('Fighter', 87, 96, '', 4), 24, true, false);
-
-    fighter.animations.play('idle', null, true);
-
-    fighter.body.setRectangle(40, 30, 20, 73);
-    fighter.inputEnabled = true;
-    fighter.input.pixelPerfect = true;
-    fighter.input.useHandCursor = true;
-    fighter.anchor.setTo(0.37, 0.88); //anchor exacto: (regPoint.x/sourceSize.w, regPoint.y/sourceSize.h)
-    fighter.isPC = true;
-    fighter.timer = game.time.create(false);
-    fighter.attackInterval = 1000; //milliseconds
-    fighter.range = 40;
-    fighter.maxHealth = 1200;
-    fighter.health = fighter.maxHealth;
-    fighter.attackDamage = 30;
-    fighter.offsetX = 0;
-    fighter.offsetY = 0;
-    fighter.speed = 120;
-    fighter.events.onInputDown.add(getSelectionRing);
-    
-    game.add.sprite(bg.width - 96, 109, 'iconFighter');
-    fighter.healthBar = game.add.sprite(bg.width - 90, 186, 'red');
-    fighter.healthBar.width = 71;
-    fighter.healthBar.height = 0;
-    fighter.healthBar.alpha = 0.5;
-    fighter.healthBar.anchor.setTo(0, 1);
-    
-    
-    
-    
-    necromancer.animations.add('attack', Phaser.Animation.generateFrameNames('Necromancer', 0, 15, '', 4), 30, true, false);
-    necromancer.animations.add('move', Phaser.Animation.generateFrameNames('Necromancer', 16, 41, '', 4), 30, true, false);
-    necromancer.animations.add('idle', Phaser.Animation.generateFrameNames('Necromancer', 42, 62, '', 4), 30, true, false);
-    necromancer.animations.add('death', Phaser.Animation.generateFrameNames('Necromancer', 63, 87, '', 4), 24, true, false);
-    necromancer.animations.add('hit', Phaser.Animation.generateFrameNames('Necromancer', 88, 97, '', 4), 24, true, false);
-    necromancer.animations.add('bolt', Phaser.Animation.generateFrameNames('Necromancer', 98, 122, '', 4), 24, true, false);
-    necromancer.animations.add('heal', Phaser.Animation.generateFrameNames('Necromancer', 123, 144, '', 4), 24, true, false);
-    
-    necromancer.animations.play('idle', null, true);
-    
-    necromancer.body.setRectangle(40, 30, 22, 85);
-    necromancer.inputEnabled = true;
-    necromancer.input.pixelPerfect = true;
-    necromancer.input.useHandCursor = true;
-    necromancer.anchor.setTo(0.32, 0.93);
-    necromancer.isPC = false;
-    necromancer.timer = game.time.create(false);
-    necromancer.attackInterval = 1000; //milliseconds
-    necromancer.range = 40;
-    necromancer.maxHealth = 300;
-    necromancer.health = necromancer.maxHealth;
-    necromancer.attackDamage = 20;
-    necromancer.offsetX = 0;
-    necromancer.offsetY = 0;
-    necromancer.speed = 100;
-    necromancer.events.onInputDown.add(getSelectionRing);
-    necromancer.think = necroThinking;
-    necromancer.bolt = bolt;
-    necromancer.heal = heal;
-    necromancer.hasMinions = hasMinions;
-    necromancer.healCoolDown = 3000;
-    necromancer.boltCoolDown = 3000;
-    necromancer.minions = [];
-    necromancer.healPower = 15;
-    necromancer.isLeader = true;
     
     //Drawing transparent rectangles for bottom interface:
     g = game.add.graphics(0, 0);
     g.fillColor = 0x000000;
     g.fillAlpha = 0.53;
-    g.drawRect(0, bg.height - 68, bg.width, 68);
+    g.drawRect(0, Daerion.bg.height - 68, Daerion.bg.width, 68);
     g.fillColor = 0xffffff;
     g.fillAlpha = 0.72;
-    g.drawRect(25, bg.height - 48, bg.width - 50, 28);
+    g.drawRect(25, Daerion.bg.height - 48, Daerion.bg.width - 50, 28);
     
-    game.add.button(400, bg.height - 56, 'buttonF', fireball, this, 0, 0, 1);//over, normal, press
-    game.add.button(20, bg.height - 56, 'buttonP', fireball, this, 0, 0, 1);
-    game.add.button(450, bg.height - 56, 'buttonL', fireball, this, 0, 0, 1);
-    game.add.button(bg.width - 65, bg.height - 56, 'buttonP', fireball, this, 0, 0, 1);
+    game.add.button(400, Daerion.bg.height - 56, 'buttonF', fireball, this, 0, 0, 1);//over, normal, press
+    game.add.button(20, Daerion.bg.height - 56, 'buttonP', fireball, this, 0, 0, 1);
+    game.add.button(450, Daerion.bg.height - 56, 'buttonL', fireball, this, 0, 0, 1);
+    game.add.button(Daerion.bg.width - 65, Daerion.bg.height - 56, 'buttonP', fireball, this, 0, 0, 1);
 
     //Interface text:
-    text = game.add.bitmapText(100, bg.height - 50, 'Daerion', { font: '32px AgencyFB', align: 'center' });
+    text = game.add.bitmapText(100, Daerion.bg.height - 50, 'Daerion', { font: '32px AgencyFB', align: 'center' });
     game.input.mouse.mouseDownCallback = mouseClick;
     
     spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -228,9 +123,9 @@ function create() {
         c.moveTo = moveTo;
         if (!c.isPC) {
             c.evade = evade;
-            if (c !== necromancer) {
-                necromancer.minions.push(c);
-                c.leader = necromancer;
+            if (c !== Daerion.necromancer) {
+                Daerion.necromancer.minions.push(c);
+                c.leader = Daerion.necromancer;
             }
         }
     }
@@ -255,48 +150,9 @@ function create() {
         e.animations.add('heal', Phaser.Animation.generateFrameNames('Effects', 0, 14, '', 4), 30, true, false);
         e.animations.add('fireball', Phaser.Animation.generateFrameNames('Effects', 15, 25, '', 4), 30, true, false);
         e.animations.add('bolt', Phaser.Animation.generateFrameNames('Effects', 26, 37, '', 4), 30, true, false);
-        
     }
 
 }
-
-function loadWolf(x, y) {
-    wolf = game.add.sprite(x, y, 'wolf');
-    wolf.animations.add('attack', Phaser.Animation.generateFrameNames('Wolf', 0, 21, '', 4), 30, true, false);
-    wolf.animations.add('move', Phaser.Animation.generateFrameNames('Wolf', 22, 37, '', 4), 30, true, false);
-    wolf.animations.add('idle', Phaser.Animation.generateFrameNames('Wolf', 38, 61, '', 4), 30, true, false);
-    wolf.animations.add('death', Phaser.Animation.generateFrameNames('Wolf', 62, 89, '', 4), 24, true, false);
-    wolf.animations.add('hit', Phaser.Animation.generateFrameNames('Wolf', 90, 100, '', 4), 24, true, false);
-    
-    wolf.animations.play('idle', null, true);
-    
-    wolf.body.setRectangle(50, 30, 46, 70);
-    wolf.inputEnabled = true;
-    wolf.input.pixelPerfect = true;
-    wolf.input.useHandCursor = true;
-    wolf.anchor.setTo(0.5, 0.88);
-    wolf.isPC = false;
-    wolf.timer = game.time.create(false);
-    wolf.attackInterval = 1000; //milliseconds
-    wolf.range = 60;
-    wolf.maxHealth = 350;
-    wolf.health = wolf.maxHealth;
-    wolf.attackDamage = 50;
-    wolf.offsetX = -3;
-    wolf.offsetY = -5;
-    wolf.speed = 200;
-    wolf.events.onInputDown.add(getSelectionRing);
-    wolf.think = wolfThinking;
-    wolf.parameters = {
-        close: 15,
-        vulnerable: 5,
-        strong: 10
-    };
-    wolf.restoreParameters = restoreParameters;
-    characters.push(wolf);
-    elements.add(wolf);
-}
-
 
 function getSelectionRing(target, pointer) {
     if (pointer) {
@@ -321,17 +177,17 @@ function getSelectionRing(target, pointer) {
                         mode = "normal";
                         
                         var offsetX = 95;
-                        if (target.x > wizard.x) {
-                            wizard.scale.x = 1;
+                        if (target.x > Daerion.wizard.x) {
+                            Daerion.wizard.scale.x = 1;
                         }
                         else {
-                            wizard.scale.x = -1;
+                            Daerion.wizard.scale.x = -1;
                             offsetX = -95;
                         }
                         
                         game.time.events.add(1000, function () { 
                             var powerAnimation = fireballs.getFirstDead();
-                            powerAnimation.reset(wizard.x + offsetX, wizard.y - 35);
+                            powerAnimation.reset(Daerion.wizard.x + offsetX, Daerion.wizard.y - 35);
                             powerAnimation.play('fireball', null, true);
                             game.physics.moveToXY(powerAnimation, target.x, target.y - 20, 500);
                             console.log(target.key);
@@ -374,8 +230,6 @@ function update() {
             }
         }
     }
-    
-
     
     getSelectionRing();
 
@@ -589,23 +443,6 @@ function damage(value)
     }
 }
 
-function wolfThinking() {
-    if (this.leader.alive) {
-        if (this.leader.threat) {
-            this.chasing = this.leader.threat;
-        }
-        else if (this.health < this.maxHealth / 4) {
-            this.evade();
-        }
-        else {
-            this.chasing = choose(this, this.parameters);
-        }
-    }
-    else {
-        this.chasing = choose(this, this.parameters);
-    }
-}
-
 function evade() {
     var distance, aux, i, j, min, index;
     distance = 0;
@@ -681,147 +518,23 @@ function choose(thisCharacter, params)
     }
 }
 
-function necroThinking() {
-    var i, distance, c, p, chosen;
-    distance = Infinity;
-    this.threat = null;
-    if (this.hasMinions()) {
-        if (this.health <= this.maxHealth / 4) { //necromancer has low health and is being attacked
-            for (i = 0; i < characters.length; i += 1) {
-                c = characters[i];
-                if (c.isPC && c.alive && c.chasing === this && game.physics.distanceBetween(this, c) < distance){
-                    distance = game.physics.distanceBetween(this, c);
-                    this.threat = c;
-                }
-            }
-            if (this.threat) {
-                this.evade();
-            }
-        }
-        else {
-            for (i = 0; i < this.minions.length; i += 1) {
-                c = this.minions[i];
-                if (c.alive && c.health < c.maxHealth/4) {
-                    this.heal(c);
-                    return;
-                }
-            }
-            //has minions and has to choose who to attack
-            p = {
-                close: 10,
-                vulnerable: 30,
-                strong: 5
-            };
-            chosen = choose(this, p);
-            if (chosen && game.physics.distanceBetween(this, chosen) > 100) {
-                this.bolt(chosen);
-            }
-            else {
-                this.chasing = chosen;
-            }
-            for (i = 0; i < this.minions.length; i += 1) {
-                c = this.minions[i];
-                if (c.alive) {
-                    c.parameters.vulnerable = 50; //alters minion behavior
-                }
-            }
-        }
-    }
-    else {
-        p = {
-            close: 20,
-            vulnerable: 15,
-            strong: 10
-        };
-        chosen = choose(this, p);
-        if (chosen && game.physics.distanceBetween(this, chosen) > 100) {
-            this.bolt(chosen);
-        }
-        else {
-            this.chasing = chosen;
-        }
-    }
-}
-
-function restoreParameters()
-{
-    this.parameters = {
-        close: 15,
-        vulnerable: 5,
-        strong: 10
-    };
-}
-
-function hasMinions() {
-    for (i = 0; i < this.minions.length; i += 1) {
-        if (this.minions[i].alive) {
-            return true;
-        }
-    }
-    return false;
-}
-
-
-function bolt(target) {
-    if ((this.timeOfLastAttack === undefined) || (game.time.elapsedSince(this.timeOfLastAttack) > necromancer.boltCoolDown)) {
-        this.animations.play('bolt', null, false);
-        this.body.velocity.setTo(0, 0);
-        this.isMoving = false;
-        this.chasing = null;
-        var offsetX = 95;
-        if (target.x > this.x) {
-            this.scale.x = 1;
-        }
-        else {
-            this.scale.x = -1;
-            offsetX = -95;
-        }
-        this.timeOfLastAttack = game.time.now;
-        game.time.events.add(700, function () { 
-            var powerAnimation = bolts.getFirstDead();
-            powerAnimation.reset(necromancer.x + offsetX, necromancer.y - 35);
-            powerAnimation.play('bolt', null, true);
-            game.physics.moveToXY(powerAnimation, target.x, target.y - 20, 500);
-            powerAnimation.rotation = game.physics.angleBetween(powerAnimation, target);
-        }, this);
-    }
-}
-
-function heal(target) {
-    if ((this.timeOfLastHeal === undefined) || (game.time.elapsedSince(this.timeOfLastHeal) > necromancer.healCoolDown)) {
-        this.animations.play('heal', null, false);
-        this.body.velocity.setTo(0, 0);
-        this.isMoving = false;
-        this.chasing = null;
-        
-        this.timeOfLastHeal = game.time.now;
-        (target.x > this.x) ? this.scale.x = 1 : this.scale.x = -1;
-        target.health = (target.health + this.healPower > target.maxHealth) ? target.maxHealth : target.health + this.healPower;
-        var e = effects.getFirstDead();
-        if (e) {
-            e.reset(target.x, target.y);
-            e.play('heal', null, false, true);
-        }
-    }
-}
-
 function toggleThink() {
     thinkActive = (!thinkActive);
 }
 
 function render() {
-//    game.debug.renderSpriteInfo(wolf, 32, 32);
+//    game.debug.renderSpriteInfo(Daerion.wolf, 32, 32);
     
-//    game.debug.renderSpriteBounds(wizard);
-//    game.debug.renderSpriteBounds(wolf);
-//    game.debug.renderSpriteBounds(fighter);
-//    game.debug.renderSpriteBounds(necromancer);
+//    game.debug.renderSpriteBounds(Daerion.wizard);
+//    game.debug.renderSpriteBounds(Daerion.wolf);
+//    game.debug.renderSpriteBounds(Daerion.fighter);
+//    game.debug.renderSpriteBounds(Daerion.necromancer);
 //    
-//    game.debug.renderPoint(wizard.input._tempPoint);
-//    game.debug.renderSpriteBody(wizard);
-//    game.debug.renderSpriteBody(wolf);
-//    game.debug.renderSpriteBody(fighter);
-//    game.debug.renderSpriteBody(necromancer);
+//    game.debug.renderPoint(Daerion.wizard.input._tempPoint);
+//    game.debug.renderSpriteBody(Daerion.wizard);
+//    game.debug.renderSpriteBody(Daerion.wolf);
+//    game.debug.renderSpriteBody(Daerion.fighter);
+//    game.debug.renderSpriteBody(Daerion.necromancer);
 //    for (i = 0; i < characters.length; i += 1) {
 //        game.debug.renderCircle(new Phaser.Circle(characters[i].x, characters[i].y, characters[i].radius * 2));
 //        game.debug.renderSpriteBody(characters[i]);
@@ -831,12 +544,12 @@ function render() {
 //        game.debug.renderSpriteBody(trees[i]);
 //        game.debug.renderPoint(new Phaser.Point(trees[i].x, trees[i].y));
 //    }
-//    game.debug.renderPoint(new Phaser.Point(wizard.x, wizard.y));
-//    game.debug.renderPoint(new Phaser.Point(wolf.x, wolf.y));
-//    game.debug.renderPoint(new Phaser.Point(wolf.x, wolf.y));
-//    game.debug.renderPhysicsBody(wizard.body);
-//    game.debug.renderPhysicsBody(wolf.body);
-//    game.debug.renderSpriteBody(wizard);
+//    game.debug.renderPoint(new Phaser.Point(Daerion.wizard.x, Daerion.wizard.y));
+//    game.debug.renderPoint(new Phaser.Point(Daerion.wolf.x, Daerion.wolf.y));
+//    game.debug.renderPoint(new Phaser.Point(Daerion.wolf.x, Daerion.wolf.y));
+//    game.debug.renderPhysicsBody(Daerion.wizard.body);
+//    game.debug.renderPhysicsBody(Daerion.wolf.body);
+//    game.debug.renderSpriteBody(Daerion.wizard);
 //    var i;
 //    for (i = 0; i < trees.length; i += 1) {
 //        game.debug.renderSpriteBody(trees[i]);
